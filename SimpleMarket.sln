@@ -1,8 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.Core", "SimpleMarket.Core\SimpleMarket.Core.csproj", "{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.Application", "SimpleMarket.Application\SimpleMarket.Application.csproj", "{BEA54A37-6BF0-4AF8-BA4E-7D2CB555407C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.Persistance", "SimpleMarket.Persistance\SimpleMarket.Persistance.csproj", "{DE608CBB-AEC7-4DAC-AF5A-2F69E7E3E322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.WebAPI", "SimpleMarket.WebAPI\SimpleMarket.WebAPI.csproj", "{681D2A10-436C-404E-BA16-616A45D4604C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA54A37-6BF0-4AF8-BA4E-7D2CB555407C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA54A37-6BF0-4AF8-BA4E-7D2CB555407C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA54A37-6BF0-4AF8-BA4E-7D2CB555407C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA54A37-6BF0-4AF8-BA4E-7D2CB555407C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE608CBB-AEC7-4DAC-AF5A-2F69E7E3E322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE608CBB-AEC7-4DAC-AF5A-2F69E7E3E322}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE608CBB-AEC7-4DAC-AF5A-2F69E7E3E322}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE608CBB-AEC7-4DAC-AF5A-2F69E7E3E322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{681D2A10-436C-404E-BA16-616A45D4604C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{681D2A10-436C-404E-BA16-616A45D4604C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{681D2A10-436C-404E-BA16-616A45D4604C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{681D2A10-436C-404E-BA16-616A45D4604C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
