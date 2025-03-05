@@ -1,0 +1,18 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SimpleMarket.Persistance.Entities;
+
+namespace SimpleMarket.Persistance.Configurations;
+
+public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
+{
+    public void Configure(EntityTypeBuilder<AddressEntity> builder)
+    {
+        builder.HasKey(a => a.Id);
+        builder.Property(a => a.Id).ValueGeneratedOnAdd();
+
+        builder.HasOne(a => a.User)
+            .WithMany(u => u.Addresses)
+            .HasForeignKey(a => a.UserID);
+    }
+}
