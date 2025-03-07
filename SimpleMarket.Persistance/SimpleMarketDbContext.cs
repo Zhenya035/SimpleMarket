@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SimpleMarket.Core.Models;
 using SimpleMarket.Persistance.Configurations;
-using SimpleMarket.Persistance.Entities;
 
 namespace SimpleMarket.Persistance;
 

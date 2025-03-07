@@ -1,4 +1,4 @@
-﻿namespace SimpleMarket.Persistance.Entities;
+﻿namespace SimpleMarket.Core.Models;
 
 public class Cart
 {

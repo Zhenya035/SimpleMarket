@@ -1,6 +1,6 @@
-﻿using SimpleMarket.Persistance.Enams;
+﻿using SimpleMarket.Core.Enums;
 
-namespace SimpleMarket.Persistance.Entities;
+namespace SimpleMarket.Core.Models;
 
 public class User
 {

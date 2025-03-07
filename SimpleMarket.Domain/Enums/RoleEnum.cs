@@ -1,4 +1,4 @@
-﻿namespace SimpleMarket.Persistance.Enams;
+﻿namespace SimpleMarket.Core.Enums;
 
 public enum Role
 {

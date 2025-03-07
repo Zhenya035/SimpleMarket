@@ -6,6 +6,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<SimpleMarketDbContext>(
     options =>
@@ -19,6 +20,9 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.MapGet("/", () => "Hello World!");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action}/{id?}");
 
 app.Run();
