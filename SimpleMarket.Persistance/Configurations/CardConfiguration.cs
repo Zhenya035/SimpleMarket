@@ -4,9 +4,9 @@ using SimpleMarket.Persistance.Entities;
 
 namespace SimpleMarket.Persistance.Configurations;
 
-public class CardConfiguration : IEntityTypeConfiguration<CardEntity>
+public class CardConfiguration : IEntityTypeConfiguration<Card>
 {
-    public void Configure(EntityTypeBuilder<CardEntity> builder)
+    public void Configure(EntityTypeBuilder<Card> builder)
     {
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Id).ValueGeneratedOnAdd();

@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SimpleMarket.Application\SimpleMarket.Application.csproj" />
-      <ProjectReference Include="..\SimpleMarket.Core\SimpleMarket.Core.csproj" />
+      <ProjectReference Include="..\SimpleMarket.Domain\SimpleMarket.Domain.csproj" />
       <ProjectReference Include="..\SimpleMarket.Persistance\SimpleMarket.Persistance.csproj" />
     </ItemGroup>
 

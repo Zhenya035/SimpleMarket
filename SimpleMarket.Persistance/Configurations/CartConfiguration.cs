@@ -4,9 +4,9 @@ using SimpleMarket.Persistance.Entities;
 
 namespace SimpleMarket.Persistance.Configurations;
 
-public class CartConfiguration : IEntityTypeConfiguration<CartEntity>
+public class CartConfiguration : IEntityTypeConfiguration<Cart>
 {
-    public void Configure(EntityTypeBuilder<CartEntity> builder)
+    public void Configure(EntityTypeBuilder<Cart> builder)
     {
         builder.HasKey(c => c.Id);
         builder.Property(c => c.Id).ValueGeneratedOnAdd();
@@ -16,7 +16,7 @@ public class CartConfiguration : IEntityTypeConfiguration<CartEntity>
         
         builder.HasOne(c => c.User)
             .WithOne(u => u.Cart)
-            .HasForeignKey<CartEntity>(c => c.UserId)
-            .HasForeignKey<UserEntity>(u => u.CartId);
+            .HasForeignKey<User>(u => u.CartId)
+            .HasForeignKey<Cart>(c => c.UserId);
     }
 }

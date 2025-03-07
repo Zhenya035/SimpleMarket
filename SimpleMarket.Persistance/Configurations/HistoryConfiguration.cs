@@ -4,16 +4,16 @@ using SimpleMarket.Persistance.Entities;
 
 namespace SimpleMarket.Persistance.Configurations;
 
-public class HistoryConfiguration : IEntityTypeConfiguration<HistoryEntity>
+public class HistoryConfiguration : IEntityTypeConfiguration<History>
 {
-    public void Configure(EntityTypeBuilder<HistoryEntity> builder)
+    public void Configure(EntityTypeBuilder<History> builder)
     {
         builder.HasKey(h => h.Id);
         builder.Property(h => h.Id).ValueGeneratedOnAdd();
         
         builder.HasOne(h => h.User)
             .WithOne(u => u.History)
-            .HasForeignKey<HistoryEntity>(h => h.UserId)
-            .HasForeignKey<UserEntity>(u => u.HistoryId);
+            .HasForeignKey<History>(h => h.UserId)
+            .HasForeignKey<User>(u => u.HistoryId);
     }
 }

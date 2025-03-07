@@ -2,7 +2,7 @@
 
 namespace SimpleMarket.Persistance.Entities;
 
-public class UserEntity
+public class User
 {
     public long Id { get; set; }
     
@@ -12,19 +12,17 @@ public class UserEntity
     public string Password { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
+    public List<Product> FavouriteProducts { get; set; } = new List<Product>();
     
-    public List<CardEntity> Cards { get; set; } = new List<CardEntity>();
+    public List<Card> Cards { get; set; } = new List<Card>();
     
-    public List<FeedbackEntity> Feedbacks { get; set; } = new List<FeedbackEntity>();
+    public List<Feedback> Feedbacks { get; set; } = new List<Feedback>();
     
-    public List<AddressEntity> Addresses { get; set; } = new List<AddressEntity>();
+    public List<Address> Addresses { get; set; } = new List<Address>();
     
     public long HistoryId { get; set; }
-    public HistoryEntity History { get; set; } = new HistoryEntity();
-    
-    public long FavouriteId { get; set; }
-    public FavouriteEntity Favourite { get; set; } = new FavouriteEntity();
+    public History History { get; set; } = new History();
     
     public long CartId { get; set; }
-    public CartEntity Cart { get; set; } = new CartEntity();
+    public Cart Cart { get; set; } = new Cart();
 }

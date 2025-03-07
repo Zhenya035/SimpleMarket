@@ -4,9 +4,9 @@ using SimpleMarket.Persistance.Entities;
 
 namespace SimpleMarket.Persistance.Configurations;
 
-public class FeedbackConfiguration : IEntityTypeConfiguration<FeedbackEntity>
+public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
 {
-    public void Configure(EntityTypeBuilder<FeedbackEntity> builder)
+    public void Configure(EntityTypeBuilder<Feedback> builder)
     {
         builder.HasKey(f => f.Id);
         builder.Property(f => f.Id).ValueGeneratedOnAdd();

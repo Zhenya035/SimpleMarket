@@ -1,6 +1,6 @@
 ﻿namespace SimpleMarket.Persistance.Entities;
 
-public class AddressEntity
+public class Address
 {
     public long Id { get; set; }
     
@@ -11,5 +11,5 @@ public class AddressEntity
     public string PostalCode { get; set; } = string.Empty;
     
     public long UserID { get; set; }
-    public UserEntity User { get; set; } = new UserEntity();
+    public User User { get; set; } = new User();
 }

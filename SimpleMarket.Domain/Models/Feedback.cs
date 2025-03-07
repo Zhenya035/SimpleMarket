@@ -1,6 +1,6 @@
 ﻿namespace SimpleMarket.Persistance.Entities;
 
-public class FeedbackEntity
+public class Feedback
 {
     public long Id { get; set; }
     
@@ -9,8 +9,8 @@ public class FeedbackEntity
     public double Evaluation { get; set; } = 0.0;
     
     public long UserId { get; set; }
-    public UserEntity User { get; set; } = new UserEntity();
+    public User User { get; set; } = new User();
     
     public long ProductId { get; set; }
-    public ProductEntity Product { get; set; } = new ProductEntity();
+    public Product Product { get; set; } = new Product();
 }

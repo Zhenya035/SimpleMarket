@@ -4,9 +4,9 @@ using SimpleMarket.Persistance.Entities;
 
 namespace SimpleMarket.Persistance.Configurations;
 
-public class AddressConfiguration : IEntityTypeConfiguration<AddressEntity>
+public class AddressConfiguration : IEntityTypeConfiguration<Address>
 {
-    public void Configure(EntityTypeBuilder<AddressEntity> builder)
+    public void Configure(EntityTypeBuilder<Address> builder)
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Id).ValueGeneratedOnAdd();

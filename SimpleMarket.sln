@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.Core", "SimpleMarket.Core\SimpleMarket.Core.csproj", "{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.Domain", "SimpleMarket.Domain\SimpleMarket.Domain.csproj", "{A8D4D71C-A216-4B3C-A144-E72AD0F8AFEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMarket.Application", "SimpleMarket.Application\SimpleMarket.Application.csproj", "{BEA54A37-6BF0-4AF8-BA4E-7D2CB555407C}"
 EndProject
