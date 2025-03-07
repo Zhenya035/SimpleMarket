@@ -22,15 +22,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(u => u.Addresses)
             .WithOne(a => a.User)
             .HasForeignKey(a => a.UserID);
-        
+
         builder.HasOne(u => u.History)
             .WithOne(h => h.User)
-            .HasForeignKey<History>(h => h.UserId)
-            .HasForeignKey<User>(u => u.HistoryId);
+            .HasForeignKey<History>(h => h.UserId);
         
         builder.HasOne(u => u.Cart)
             .WithOne(c => c.User)
-            .HasForeignKey<User>(u => u.CartId)
             .HasForeignKey<Cart>(c => c.UserId);
     }
 }

@@ -10,10 +10,9 @@ public class HistoryConfiguration : IEntityTypeConfiguration<History>
     {
         builder.HasKey(h => h.Id);
         builder.Property(h => h.Id).ValueGeneratedOnAdd();
-        
+
         builder.HasOne(h => h.User)
             .WithOne(u => u.History)
-            .HasForeignKey<History>(h => h.UserId)
-            .HasForeignKey<User>(u => u.HistoryId);
+            .HasForeignKey<History>(h => h.UserId);
     }
 }

@@ -20,9 +20,7 @@ public class User
     
     public List<Address> Addresses { get; set; } = new List<Address>();
     
-    public long HistoryId { get; set; }
     public History History { get; set; } = new History();
     
-    public long CartId { get; set; }
     public Cart Cart { get; set; } = new Cart();
 }
