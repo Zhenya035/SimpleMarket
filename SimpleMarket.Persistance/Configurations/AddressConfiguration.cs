@@ -13,6 +13,6 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
 
         builder.HasOne(a => a.User)
             .WithMany(u => u.Addresses)
-            .HasForeignKey(a => a.UserID);
+            .HasForeignKey(a => a.UserId);
     }
 }

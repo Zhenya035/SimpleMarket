@@ -10,6 +10,6 @@ public class Address
     public string HomeNumber { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
     
-    public long UserID { get; set; }
+    public long UserId { get; set; }
     public User User { get; set; } = new User();
 }

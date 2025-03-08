@@ -21,7 +21,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasMany(u => u.Addresses)
             .WithOne(a => a.User)
-            .HasForeignKey(a => a.UserID);
+            .HasForeignKey(a => a.UserId);
 
         builder.HasOne(u => u.History)
             .WithOne(h => h.User)
