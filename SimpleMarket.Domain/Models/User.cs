@@ -12,15 +12,15 @@ public class User
     public string Password { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
-    public List<Product> FavouriteProducts { get; set; } = new List<Product>();
+    public List<Product>? FavouriteProducts { get; set; } = null;
     
-    public List<Card> Cards { get; set; } = new List<Card>();
+    public List<Card>? Cards { get; set; } = null;
     
-    public List<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+    public List<Feedback>? Feedbacks { get; set; } = null;
     
-    public List<Address> Addresses { get; set; } = new List<Address>();
+    public List<Address>? Addresses { get; set; } = null;
     
-    public History History { get; set; } = new History();
+    public History? History { get; set; } = null;
     
-    public Cart Cart { get; set; } = new Cart();
+    public Cart? Cart { get; set; } = null;
 }

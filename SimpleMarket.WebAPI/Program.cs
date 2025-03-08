@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using SimpleMarket.Application.Services;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Persistance;
+using SimpleMarket.Persistance.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -7,6 +10,13 @@ var configuration = builder.Configuration;
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddDbContext<SimpleMarketDbContext>(
     options =>
@@ -20,9 +30,6 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action}/{id?}");
+app.MapControllers();
 
 app.Run();
