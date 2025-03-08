@@ -3,7 +3,7 @@ using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
-public class UserService(IUserRepository userRepository, IProductRepository productRepository)
+public class UserService(IUserRepository userRepository)
 {
     public async Task<List<User>> GetAllUsers()
     {

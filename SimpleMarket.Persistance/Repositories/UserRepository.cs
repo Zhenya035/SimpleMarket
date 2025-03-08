@@ -50,7 +50,7 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
         }
         catch (Exception e)
         {
-            throw new ApplicationException("Error when creating a user");
+            throw new Exception("Error when creating a user");
         }
     }
 
