@@ -11,9 +11,20 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<IAddressRepository, AddressRepository>();
+builder.Services.AddScoped<AddressService>();
+
+builder.Services.AddScoped<ICardRepository, CardRepository>();
+
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+
+builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>();
