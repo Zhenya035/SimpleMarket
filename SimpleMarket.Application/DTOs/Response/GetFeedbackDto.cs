@@ -1,4 +1,4 @@
-﻿namespace SimpleMarket.Application.DTOs.GetUser;
+﻿namespace SimpleMarket.Application.DTOs.Response;
 
 public class GetFeedbackDto
 {
@@ -10,7 +10,7 @@ public class GetFeedbackDto
     
     public double Evaluation { get; set; } = 0;
     
-    public long UserId { get; init; }
+    public string UserName { get; set; } = string.Empty;
     
-    public long ProductId { get; init; }
+    public string ProductName { get; set; } = string.Empty;
 }

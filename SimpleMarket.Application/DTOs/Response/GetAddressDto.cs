@@ -1,4 +1,4 @@
-﻿namespace SimpleMarket.Application.DTOs;
+﻿namespace SimpleMarket.Application.DTOs.Response;
 
 public class GetAddressDto
 {

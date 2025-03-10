@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.Mapping;
 using SimpleMarket.Application.Services;
 using SimpleMarket.Core.Models;
 
@@ -54,21 +55,11 @@ public class UserController(UserService userService) : ControllerBase
     }
     
     [HttpPost("users/add")]
-    public async Task<IActionResult> Add([FromBody] AddUserDto newAddUser)
+    public async Task<IActionResult> Add([FromBody] AddUserDto newUser)
     {
-        var user = new User
-        {
-            Role = newAddUser.Role,
-            Username = newAddUser.Username,
-            Sex = newAddUser.Sex,
-            Password = newAddUser.Password,
-            Email = newAddUser.Email,
-            PhoneNumber = newAddUser.PhoneNumber
-        };
-        
         try
         {
-            await userService.AddUser(user);
+            await userService.AddUser(newUser);
             return Ok();
         }
         catch (Exception e)
@@ -78,20 +69,11 @@ public class UserController(UserService userService) : ControllerBase
     }
 
     [HttpPut("users/{id}/update")]
-    public async Task<IActionResult> Update([FromBody] AddUserDto newAddUser, long id)
+    public async Task<IActionResult> Update([FromBody] AddUserDto newUser, long id)
     {
-        var user = new User
-        {
-            Role = newAddUser.Role,
-            Username = newAddUser.Username,
-            Sex = newAddUser.Sex,
-            Password = newAddUser.Password,
-            Email = newAddUser.Email,
-            PhoneNumber = newAddUser.PhoneNumber
-        };
         try
         {
-            await userService.UpdateUser(user, id);
+            await userService.UpdateUser(newUser, id);
             return Ok();
         }
         catch (KeyNotFoundException e)

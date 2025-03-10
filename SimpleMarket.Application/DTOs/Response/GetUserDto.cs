@@ -1,9 +1,8 @@
 ﻿using SimpleMarket.Core.Enums;
-using SimpleMarket.Core.Models;
 
-namespace SimpleMarket.Application.DTOs.GetUser;
+namespace SimpleMarket.Application.DTOs.Response;
 
-public class GetUserDTO
+public class GetUserDto
 {
     public long Id { get; init; }
     
@@ -19,7 +18,7 @@ public class GetUserDTO
     
     public string PhoneNumber { get; set; } = string.Empty;
     
-    public List<Product> FavouriteProducts { get; set; } = [];
+    public List<GetProductDto> FavouriteProducts { get; set; } = [];
     
     public List<GetFeedbackDto> Feedbacks { get; init; } = [];
     

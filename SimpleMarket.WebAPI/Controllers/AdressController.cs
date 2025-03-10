@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Response;
 using SimpleMarket.Application.Services;
 using SimpleMarket.Core.Models;
 

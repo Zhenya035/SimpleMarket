@@ -1,4 +1,5 @@
-﻿using SimpleMarket.Application.DTOs.GetUser;
+﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Response;
 using SimpleMarket.Application.Mapping;
 using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
@@ -7,24 +8,24 @@ namespace SimpleMarket.Application.Services;
 
 public class UserService(IUserRepository userRepository, CartService cartService, HistoryService historyService)
 {
-    public async Task<List<GetUserDTO>> GetAllUsers()
+    public async Task<List<GetUserDto>> GetAllUsers()
     {
         var users = await userRepository.GetAllUsers();
 
         if (users == null)
             throw new KeyNotFoundException("Users not found");
         
-        return users.Select(u => UserMapping.MapToDto(u)).ToList();
+        return users.Select(u => UserMapping.MapToResponseDto(u)).ToList();
     }
 
-    public async Task<User> GetUserById(long id)
+    public async Task<GetUserDto> GetUserById(long id)
     {
         var user = await userRepository.GetUserById(id);
         
         if(user == null)
             throw new KeyNotFoundException("User not found.");
         
-        return user;
+        return UserMapping.MapToResponseDto(user);
     }
 
     public async Task AddFavouriteProduct(long userId, long productId)
@@ -39,8 +40,10 @@ public class UserService(IUserRepository userRepository, CartService cartService
         }
     }
 
-    public async Task AddUser(User user)
+    public async Task AddUser(AddUserDto newUser)
     {
+        var user = UserMapping.MapFromRequestDto(newUser);
+        
         try
         {
             var userId = await userRepository.AddUser(user);
@@ -55,12 +58,14 @@ public class UserService(IUserRepository userRepository, CartService cartService
         }
     }
     
-    public async Task UpdateUser(User user, long userId)
+    public async Task UpdateUser(AddUserDto newUser, long userId)
     {
         var foundUser = await userRepository.GetUserById(userId);
         
         if (foundUser == null)
             throw new KeyNotFoundException("User not found.");
+        
+        var user = UserMapping.MapFromRequestDto(newUser);
         
         try
         {

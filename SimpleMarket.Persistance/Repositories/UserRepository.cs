@@ -22,6 +22,11 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
     {
         return await dbContext.Users
             .AsNoTracking()
+            .Include(u =>u.FavouriteProducts)
+            .Include(u =>u.Feedbacks)
+            .Include(u =>u.Addresses)
+            .Include(u => u.Cart)
+            .Include(u => u.History)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
