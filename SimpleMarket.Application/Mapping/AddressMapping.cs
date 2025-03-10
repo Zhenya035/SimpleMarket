@@ -1,13 +1,14 @@
 ﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.GetUser;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Mapping;
 
-public class AddressMapping
+public static class AddressMapping
 {
-    public static AddressRequest MapFromDto(Address addressRequest)
+    public static GetUserAddressDTO MapFromDto(Address addressRequest)
     {
-        return new AddressRequest
+        return new GetUserAddressDTO
         {
             Country = addressRequest.Country,
             City = addressRequest.City,

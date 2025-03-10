@@ -21,9 +21,9 @@ public class GetUserDTO
     
     public List<Product> FavouriteProducts { get; set; } = [];
     
-    public List<Feedback> Feedbacks { get; init; } = [];
+    public List<GetUserFeedbackDTO> Feedbacks { get; init; } = [];
     
-    public IEnumerable<AddressRequest> Addresses { get; init; } = [];
+    public IEnumerable<GetUserAddressDTO> Addresses { get; init; } = [];
     
     public GetUserHistoryDTO History { get; init; }
     

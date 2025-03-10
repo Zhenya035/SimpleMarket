@@ -54,16 +54,16 @@ public class UserController(UserService userService) : ControllerBase
     }
     
     [HttpPost("users/add")]
-    public async Task<IActionResult> Add([FromBody] UserRequest newUser)
+    public async Task<IActionResult> Add([FromBody] AddUserDTO newAddUser)
     {
         var user = new User
         {
-            Role = newUser.Role,
-            Username = newUser.Username,
-            Sex = newUser.Sex,
-            Password = newUser.Password,
-            Email = newUser.Email,
-            PhoneNumber = newUser.PhoneNumber
+            Role = newAddUser.Role,
+            Username = newAddUser.Username,
+            Sex = newAddUser.Sex,
+            Password = newAddUser.Password,
+            Email = newAddUser.Email,
+            PhoneNumber = newAddUser.PhoneNumber
         };
         
         try
@@ -78,16 +78,16 @@ public class UserController(UserService userService) : ControllerBase
     }
 
     [HttpPut("users/{id}/update")]
-    public async Task<IActionResult> Update([FromBody] UserRequest newUser, long id)
+    public async Task<IActionResult> Update([FromBody] AddUserDTO newAddUser, long id)
     {
         var user = new User
         {
-            Role = newUser.Role,
-            Username = newUser.Username,
-            Sex = newUser.Sex,
-            Password = newUser.Password,
-            Email = newUser.Email,
-            PhoneNumber = newUser.PhoneNumber
+            Role = newAddUser.Role,
+            Username = newAddUser.Username,
+            Sex = newAddUser.Sex,
+            Password = newAddUser.Password,
+            Email = newAddUser.Email,
+            PhoneNumber = newAddUser.PhoneNumber
         };
         try
         {

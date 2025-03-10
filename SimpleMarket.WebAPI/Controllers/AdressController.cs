@@ -26,15 +26,15 @@ public class AdressController(AddressService addressService) : ControllerBase
     }
 
     [HttpPost("{userId}/addresses/add")]
-    public async Task<IActionResult> AddAddress([FromBody] AddressRequest newAddress, long userId)
+    public async Task<IActionResult> AddAddress([FromBody] GetUserAddressDTO newGetUserAddress, long userId)
     {
         var address = new Address()
         {
-            Country = newAddress.Country,
-            City = newAddress.City,
-            Street = newAddress.Street,
-            HomeNumber = newAddress.HomeNumber,
-            PostalCode = newAddress.PostalCode,
+            Country = newGetUserAddress.Country,
+            City = newGetUserAddress.City,
+            Street = newGetUserAddress.Street,
+            HomeNumber = newGetUserAddress.HomeNumber,
+            PostalCode = newGetUserAddress.PostalCode,
             UserId = userId
         };
         
@@ -50,15 +50,15 @@ public class AdressController(AddressService addressService) : ControllerBase
     }
 
     [HttpPut("{userId}/addresses/{addressId}/update")]
-    public async Task<IActionResult> UpdateAddress([FromBody] AddressRequest newAddress, long userId)
+    public async Task<IActionResult> UpdateAddress([FromBody] GetUserAddressDTO newGetUserAddress, long userId)
     {
         var address = new Address()
         {
-            Country = newAddress.Country,
-            City = newAddress.City,
-            Street = newAddress.Street,
-            HomeNumber = newAddress.HomeNumber,
-            PostalCode = newAddress.PostalCode,
+            Country = newGetUserAddress.Country,
+            City = newGetUserAddress.City,
+            Street = newGetUserAddress.Street,
+            HomeNumber = newGetUserAddress.HomeNumber,
+            PostalCode = newGetUserAddress.PostalCode,
             UserId = userId
         };
         

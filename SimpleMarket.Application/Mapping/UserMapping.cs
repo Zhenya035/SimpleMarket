@@ -18,7 +18,7 @@ public class UserMapping
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
             FavouriteProducts = user.FavouriteProducts,
-            Feedbacks = user.Feedbacks,
+            Feedbacks = new List<GetUserFeedbackDTO>(),
             Addresses = user.Addresses.Select(a => AddressMapping.MapFromDto(a)).ToList(),
             
             Cart = new GetUserCartDTO
