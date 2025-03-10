@@ -5,7 +5,7 @@ namespace SimpleMarket.Application.Services;
 
 public class AddressService(IAddressRepository addressRepository)
 {
-    public async Task<List<Address>> GetAddressesByUser( long userId)
+    public async Task<List<Address>> GetAddressesByUser(long userId)
     {
         var addresses = await addressRepository.GetAllAddressesByUser(userId);
         
@@ -45,11 +45,11 @@ public class AddressService(IAddressRepository addressRepository)
         }
     }
 
-    public async Task DeleteAddress(long addressId)
+    public async Task DeleteAddress(long addressId, long userId)
     {
-        var user = await addressRepository.GetAllAddressesById(addressId);
+        var addresses = await addressRepository.GetAllAddressesById(userId);
         
-        if(user == null)
+        if(addresses == null)
             throw new KeyNotFoundException("Address not found.");
         
         await addressRepository.DeleteAddress(addressId);

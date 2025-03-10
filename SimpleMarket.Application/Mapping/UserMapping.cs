@@ -19,7 +19,7 @@ public class UserMapping
             PhoneNumber = user.PhoneNumber,
             FavouriteProducts = user.FavouriteProducts,
             Feedbacks = user.Feedbacks,
-            Addresses = user.Addresses,
+            Addresses = user.Addresses.Select(a => AddressMapping.MapFromDto(a)).ToList(),
             
             Cart = new GetUserCartDTO
             {

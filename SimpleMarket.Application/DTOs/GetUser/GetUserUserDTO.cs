@@ -23,7 +23,7 @@ public class GetUserDTO
     
     public List<Feedback> Feedbacks { get; init; } = [];
     
-    public List<Address> Addresses { get; init; } = [];
+    public IEnumerable<AddressRequest> Addresses { get; init; } = [];
     
     public GetUserHistoryDTO History { get; init; }
     
