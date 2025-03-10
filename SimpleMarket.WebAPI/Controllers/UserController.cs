@@ -39,8 +39,22 @@ public class UserController(UserService userService) : ControllerBase
         }
     }
 
+    [HttpPost("users/{userId}/favorite/add/{productId}")]
+    public async Task<IActionResult> AddFavorite(long productId, long userId)
+    {
+        try
+        {
+            await userService.AddFavouriteProduct(productId, userId);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
+    }
+    
     [HttpPost("users/add")]
-    public async Task<IActionResult> Add([FromBody] AddUserRequest newUser)
+    public async Task<IActionResult> Add([FromBody] UserRequest newUser)
     {
         var user = new User
         {
@@ -64,8 +78,17 @@ public class UserController(UserService userService) : ControllerBase
     }
 
     [HttpPut("users/{id}/update")]
-    public async Task<IActionResult> Update([FromBody] User user, long id)
+    public async Task<IActionResult> Update([FromBody] UserRequest newUser, long id)
     {
+        var user = new User
+        {
+            Role = newUser.Role,
+            Username = newUser.Username,
+            Sex = newUser.Sex,
+            Password = newUser.Password,
+            Email = newUser.Email,
+            PhoneNumber = newUser.PhoneNumber
+        };
         try
         {
             await userService.UpdateUser(user, id);

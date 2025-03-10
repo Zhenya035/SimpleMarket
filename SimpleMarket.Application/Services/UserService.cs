@@ -1,5 +1,4 @@
-﻿using SimpleMarket.Application.DTOs;
-using SimpleMarket.Application.DTOs.GetUser;
+﻿using SimpleMarket.Application.DTOs.GetUser;
 using SimpleMarket.Application.Mapping;
 using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
@@ -26,6 +25,18 @@ public class UserService(IUserRepository userRepository, CartService cartService
             throw new KeyNotFoundException("User not found.");
         
         return user;
+    }
+
+    public async Task AddFavouriteProduct(long userId, long productId)
+    {
+        try
+        {
+            await userRepository.AddFavouriteProduct(userId, productId);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
     public async Task AddUser(User user)
