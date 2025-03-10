@@ -1,18 +1,21 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
+﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.GetUser;
+using SimpleMarket.Application.Mapping;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
 public class UserService(IUserRepository userRepository, CartService cartService, HistoryService historyService)
 {
-    public async Task<List<User>> GetAllUsers()
+    public async Task<List<GetUserDTO>> GetAllUsers()
     {
         var users = await userRepository.GetAllUsers();
 
         if (users == null)
             throw new KeyNotFoundException("Users not found");
-
-        return users;
+        
+        return users.Select(u => UserMapping.MapToDto(u)).ToList();
     }
 
     public async Task<User> GetUserById(long id)
@@ -33,6 +36,7 @@ public class UserService(IUserRepository userRepository, CartService cartService
 
             await cartService.CreateCart(userId);
             await historyService.CreateHistory(userId);
+            
         }
         catch (Exception e)
         {

@@ -14,7 +14,6 @@ public class UserController(UserService userService) : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
         try
         {
             var users = await userService.GetAllUsers();
