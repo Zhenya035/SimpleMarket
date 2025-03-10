@@ -21,11 +21,11 @@ public class GetUserDTO
     
     public List<Product> FavouriteProducts { get; set; } = [];
     
-    public List<GetUserFeedbackDTO> Feedbacks { get; init; } = [];
+    public List<GetFeedbackDto> Feedbacks { get; init; } = [];
     
-    public IEnumerable<GetUserAddressDTO> Addresses { get; init; } = [];
+    public IEnumerable<GetAddressDto> Addresses { get; init; } = [];
     
-    public GetUserHistoryDTO History { get; init; }
+    public GetHistoryDto History { get; init; }
     
-    public GetUserCartDTO Cart { get; init; }
+    public GetCartDto Cart { get; init; }
 }

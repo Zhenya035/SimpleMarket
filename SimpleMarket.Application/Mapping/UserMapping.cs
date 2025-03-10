@@ -18,18 +18,16 @@ public class UserMapping
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
             FavouriteProducts = user.FavouriteProducts,
-            Feedbacks = new List<GetUserFeedbackDTO>(),
+            Feedbacks = new List<GetFeedbackDto>(),
             Addresses = user.Addresses.Select(a => AddressMapping.MapFromDto(a)).ToList(),
             
-            Cart = new GetUserCartDTO
+            Cart = new GetCartDto
             {
                 Id = user.Cart.Id,
-                UserId = user.Cart.UserId
             },
-            History = new GetUserHistoryDTO()
+            History = new GetHistoryDto()
             {
                 Id = user.History.Id,
-                UserId = user.History.UserId
             }
         };
     }

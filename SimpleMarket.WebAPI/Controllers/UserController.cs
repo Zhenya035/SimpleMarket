@@ -54,7 +54,7 @@ public class UserController(UserService userService) : ControllerBase
     }
     
     [HttpPost("users/add")]
-    public async Task<IActionResult> Add([FromBody] AddUserDTO newAddUser)
+    public async Task<IActionResult> Add([FromBody] AddUserDto newAddUser)
     {
         var user = new User
         {
@@ -78,7 +78,7 @@ public class UserController(UserService userService) : ControllerBase
     }
 
     [HttpPut("users/{id}/update")]
-    public async Task<IActionResult> Update([FromBody] AddUserDTO newAddUser, long id)
+    public async Task<IActionResult> Update([FromBody] AddUserDto newAddUser, long id)
     {
         var user = new User
         {

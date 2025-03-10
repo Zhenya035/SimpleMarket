@@ -2,7 +2,7 @@
 
 namespace SimpleMarket.Application.DTOs;
 
-public class AddUserDTO
+public class AddUserDto
 {
     public Role Role { get; set; } = Role.User;
     public string Username { get; set; } = string.Empty;

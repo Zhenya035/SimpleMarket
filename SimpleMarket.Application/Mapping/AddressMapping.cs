@@ -6,10 +6,11 @@ namespace SimpleMarket.Application.Mapping;
 
 public static class AddressMapping
 {
-    public static GetUserAddressDTO MapFromDto(Address addressRequest)
+    public static GetAddressDto MapFromDto(Address addressRequest)
     {
-        return new GetUserAddressDTO
+        return new GetAddressDto
         {
+            Id = addressRequest.Id,
             Country = addressRequest.Country,
             City = addressRequest.City,
             Street = addressRequest.Street,
