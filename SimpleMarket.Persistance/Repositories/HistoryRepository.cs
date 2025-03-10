@@ -3,7 +3,7 @@ using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Persistance.Repositories;
 
-public class HistoryRepository : IHistoryRepository
+public class HistoryRepository(SimpleMarketDbContext dbContext) : IHistoryRepository
 {
     public Task<List<History>> GetHistoryByUser(long userId)
     {
@@ -15,9 +15,20 @@ public class HistoryRepository : IHistoryRepository
         throw new NotImplementedException();
     }
 
-    public Task CreateHistory(History history)
+    public async Task CreateHistory(History history)
     {
-        throw new NotImplementedException();
+        if (history == null)
+            throw new ArgumentNullException(nameof(history), "User cannot be null");
+
+        try
+        {
+            await dbContext.Histories.AddAsync(history);
+            await dbContext.SaveChangesAsync(); 
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error creating cart", e);
+        } 
     }
 
     public Task UpdateHistory(History history)

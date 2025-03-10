@@ -10,6 +10,8 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
     {
         return await dbContext.Users
             .AsNoTracking()
+            .Include(u => u.Cart)
+            .Include(u => u.History)
             .ToListAsync();
     }
 
@@ -38,15 +40,17 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
         }
     }
 
-    public async Task AddUser(User user)
+    public async Task<long> AddUser(User user)
     {
         if(user == null)
             throw new ArgumentNullException(nameof(user), "User cannot be null");
 
         try
         {
-            await dbContext.Users.AddAsync(user);
+            var newUser = await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
+            
+            return newUser.Entity.Id;
         }
         catch (Exception e)
         {

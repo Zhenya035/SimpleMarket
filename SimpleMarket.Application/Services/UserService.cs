@@ -3,7 +3,7 @@ using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
-public class UserService(IUserRepository userRepository)
+public class UserService(IUserRepository userRepository, CartService cartService, HistoryService historyService)
 {
     public async Task<List<User>> GetAllUsers()
     {
@@ -29,7 +29,10 @@ public class UserService(IUserRepository userRepository)
     {
         try
         {
-            await userRepository.AddUser(user);
+            var userId = await userRepository.AddUser(user);
+
+            await cartService.CreateCart(userId);
+            await historyService.CreateHistory(userId);
         }
         catch (Exception e)
         {
