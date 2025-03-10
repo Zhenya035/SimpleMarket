@@ -36,7 +36,6 @@ public class AddressRepository(SimpleMarketDbContext dbContext) : IAddressReposi
         
         try
         {
-            address.UserId = userId;
             await dbContext.Addresses.AddAsync(address);
             await dbContext.SaveChangesAsync();
         }

@@ -2,10 +2,10 @@
 
 public class History
 {
-    public long Id { get; set; }
+    public long Id { get; init; }
     
     public List<Product> Products { get; set; } = [];
     
-    public long UserId { get; set; }
-    public User User { get; set; } = new User();
+    public long UserId { get; init; }
+    public User User { get; init; }
 }

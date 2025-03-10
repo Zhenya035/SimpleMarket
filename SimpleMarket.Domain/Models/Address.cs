@@ -2,7 +2,7 @@
 
 public class Address
 {
-    public long Id { get; set; }
+    public long Id { get; init; }
     
     public string Country { get; set; } = string.Empty;
     public string City { get; set; } = string.Empty;
@@ -10,6 +10,6 @@ public class Address
     public string HomeNumber { get; set; } = string.Empty;
     public string PostalCode { get; set; } = string.Empty;
     
-    public long UserId { get; set; }
-    public User User { get; set; } = new User();
+    public long UserId { get; init; }
+    public User User { get; init; }
 }

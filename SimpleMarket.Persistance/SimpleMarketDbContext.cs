@@ -7,7 +7,6 @@ namespace SimpleMarket.Persistance;
 public class SimpleMarketDbContext(DbContextOptions<SimpleMarketDbContext> options) : DbContext(options)
 {
     public DbSet<Address>? Addresses { get; set; }
-    public DbSet<Card>? Cards { get; set; } 
     public DbSet<Cart>? Carts { get; set; } 
     public DbSet<Category>? Categories { get; set; }
     public DbSet<Feedback>? Feedbacks { get; set; }
@@ -18,7 +17,6 @@ public class SimpleMarketDbContext(DbContextOptions<SimpleMarketDbContext> optio
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AddressConfiguration());
-        modelBuilder.ApplyConfiguration(new CardConfiguration());
         modelBuilder.ApplyConfiguration(new CartConfiguration());
         modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         modelBuilder.ApplyConfiguration(new FeedbackConfiguration());

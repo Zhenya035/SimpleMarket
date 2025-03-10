@@ -2,10 +2,12 @@
 
 public class Cart
 {
-    public long Id { get; set; }
+    public long Id { get; init; }
     
     public List<Product> Products { get; set; } = [];
+
+    public decimal TotalPrice { get; set; } = 0;
     
-    public long UserId { get; set; }
-    public User User { get; set; }
+    public long UserId { get; init; }
+    public User User { get; init; }
 }

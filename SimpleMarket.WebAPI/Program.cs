@@ -14,8 +14,6 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IAddressRepository, AddressRepository>();
 builder.Services.AddScoped<AddressService>();
 
-builder.Services.AddScoped<ICardRepository, CardRepository>();
-
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();

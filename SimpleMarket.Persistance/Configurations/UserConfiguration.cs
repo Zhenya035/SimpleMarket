@@ -10,10 +10,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
         builder.Property(u => u.Id).ValueGeneratedOnAdd();
-        
-        builder.HasMany(u => u.Cards)
-            .WithOne(c => c.User)
-            .HasForeignKey(c => c.UserId);
 
         builder.HasMany(u => u.Feedbacks).
             WithOne(f => f.User)
