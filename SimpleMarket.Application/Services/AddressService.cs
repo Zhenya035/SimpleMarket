@@ -1,22 +1,26 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
-using SimpleMarket.Core.Models;
+﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Response;
+using SimpleMarket.Application.Mapping;
+using SimpleMarket.Core.Interfaces.Repositories;
 
 namespace SimpleMarket.Application.Services;
 
 public class AddressService(IAddressRepository addressRepository)
 {
-    public async Task<List<Address>> GetAddressesByUser(long userId)
+    public async Task<List<GetAddressDto>> GetAddressesByUser(long userId)
     {
         var addresses = await addressRepository.GetAllAddressesByUser(userId);
         
-        if (addresses == null)
+        if (addresses.Count == 0)
             throw new KeyNotFoundException("Addresses not found");
         
-        return addresses;
+        return addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList();
     }
 
-    public async Task AddAddress(Address address, long userId)
+    public async Task AddAddress(AddAddressDto newAddress, long userId)
     {
+        var address = AddressMapping.AddMapFromDto(newAddress, userId);
+        
         try
         {
             await addressRepository.AddAddress(address, userId);
@@ -27,12 +31,14 @@ public class AddressService(IAddressRepository addressRepository)
         }
     }
 
-    public async Task UpdateAddress(Address address, long addressId)
+    public async Task UpdateAddress(AddAddressDto newAddress, long addressId, long userId)
     {
         var addresses = await addressRepository.GetAllAddressesById(addressId);
         
-        if (addresses == null)
+        if (addresses.Count == 0)
             throw new KeyNotFoundException("Address not found");
+        
+        var address = AddressMapping.AddMapFromDto(newAddress, userId);
         
         try
         {
@@ -49,7 +55,7 @@ public class AddressService(IAddressRepository addressRepository)
     {
         var addresses = await addressRepository.GetAllAddressesById(userId);
         
-        if(addresses == null)
+        if(addresses.Count == 0)
             throw new KeyNotFoundException("Address not found.");
         
         await addressRepository.DeleteAddress(addressId);

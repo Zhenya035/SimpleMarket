@@ -1,6 +1,4 @@
-﻿using SimpleMarket.Core.Models;
-
-namespace SimpleMarket.Application.DTOs.Response;
+﻿namespace SimpleMarket.Application.DTOs.Response;
 
 public class GetHistoryDto
 {
