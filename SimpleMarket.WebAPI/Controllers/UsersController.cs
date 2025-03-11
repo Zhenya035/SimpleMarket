@@ -7,10 +7,10 @@ using SimpleMarket.Core.Models;
 namespace SimpleMarket.WebAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
-public class UserController(UserService userService) : ControllerBase
+[Route("[controller]")]
+public class UsersController(UserService userService) : ControllerBase
 {
-    [HttpGet("users")]
+    [HttpGet("all")]
     public async Task<ActionResult<List<User>>> Get()
     {
         if (!ModelState.IsValid)
@@ -26,7 +26,7 @@ public class UserController(UserService userService) : ControllerBase
         }
     }
 
-    [HttpGet("users/{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<User>> Get(long id)
     {
         try
@@ -40,7 +40,7 @@ public class UserController(UserService userService) : ControllerBase
         }
     }
 
-    [HttpPost("users/{userId}/favorite/add/{productId}")]
+    [HttpPost("{userId}/favorite/add/{productId}")]
     public async Task<IActionResult> AddFavorite(long productId, long userId)
     {
         try
@@ -54,7 +54,7 @@ public class UserController(UserService userService) : ControllerBase
         }
     }
     
-    [HttpPost("users/add")]
+    [HttpPost("add")]
     public async Task<IActionResult> Add([FromBody] AddUserDto newUser)
     {
         try
@@ -68,7 +68,7 @@ public class UserController(UserService userService) : ControllerBase
         }
     }
 
-    [HttpPut("users/{id}/update")]
+    [HttpPut("{id}/update")]
     public async Task<IActionResult> Update([FromBody] AddUserDto newUser, long id)
     {
         try
@@ -86,7 +86,7 @@ public class UserController(UserService userService) : ControllerBase
         }
     }
 
-    [HttpDelete("users/{id}/delete")]
+    [HttpDelete("{id}/delete")]
     public async Task<IActionResult> Delete(long id)
     {
         try

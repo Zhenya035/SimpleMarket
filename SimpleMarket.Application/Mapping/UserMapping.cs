@@ -4,7 +4,7 @@ using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Mapping;
 
-public class UserMapping
+public static class UserMapping
 {
     public static GetUserDto MapToResponseDto(User user) => 
         new GetUserDto
@@ -18,7 +18,7 @@ public class UserMapping
             PhoneNumber = user.PhoneNumber,
             FavouriteProducts = user.FavouriteProducts.Select(fP => ProductMapping.MapToGetProductDto(fP)).ToList(),
             Feedbacks = user.Feedbacks.Select(f => FeedbackMapping.MapToGetFeedbackDto(f)).ToList(),
-            Addresses = user.Addresses.Select(a => AddressMapping.MapFromDto(a)).ToList(),
+            Addresses = user.Addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList(),
             Cart = CartMapping.MapToGetCartDto(user.Cart),
             History = HistoryMapping.MapToGetHistoryDto(user.History),
         };
