@@ -1,32 +1,78 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Persistance.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(SimpleMarketDbContext dbContext) : IProductRepository
 {
-    public Task<List<Product>> GetAllProducts()
+    public async Task<List<Product>> GetAllProducts()
     {
-        throw new NotImplementedException();
+        return await dbContext.Products
+            .AsNoTracking()
+            .ToListAsync();
     }
 
-    public Task<Product> GetProductById(long id)
+    public async Task<Product> GetProductById(long id)
     {
-        throw new NotImplementedException();
+        var product = await dbContext.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id);
+        if (product == null)
+            throw new KeyNotFoundException("Product not found");
+        
+        return product;
     }
 
-    public Task CreateProduct(Product product)
+    public async Task CreateProduct(Product product)
     {
-        throw new NotImplementedException();
+        if(product == null)
+            throw new ArgumentNullException(nameof(product), "Product cannot be null");
+
+        try
+        {
+            await dbContext.Products.AddAsync(product);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Failed to create product: {e.Message}");
+        }
     }
 
-    public Task UpdateProduct(Product product)
+    public async Task UpdateProduct(Product upProduct, long productId)
     {
-        throw new NotImplementedException();
+        if(upProduct == null)
+            throw new ArgumentNullException(nameof(upProduct), "Product cannot be null");
+        
+        var product = await dbContext.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == productId);
+        
+        if(product == null)
+            throw new KeyNotFoundException("Product not found");
+
+        await dbContext.Products
+            .Where(p => p.Id == productId)
+            .ExecuteUpdateAsync(p => p
+                .SetProperty(p => p.Name, upProduct.Name)
+                .SetProperty(p => p.Description, upProduct.Description)
+                .SetProperty(p => p.Price, upProduct.Price)
+                .SetProperty(p => p.Images, upProduct.Images)
+            );
     }
 
-    public Task DeleteProduct(long id)
+    public async Task DeleteProduct(long id)
     {
-        throw new NotImplementedException();
+        var product = await dbContext.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id);
+        
+        if(product == null)
+            throw new KeyNotFoundException("Product not found");
+
+        await dbContext.Products
+            .Where(p => p.Id == id)
+            .ExecuteDeleteAsync();
     }
 }

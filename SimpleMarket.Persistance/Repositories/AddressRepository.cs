@@ -32,7 +32,7 @@ public class AddressRepository(SimpleMarketDbContext dbContext) : IAddressReposi
             .FirstOrDefaultAsync(u => u.Id == userId);
         
         if (user == null)
-            throw new ArgumentNullException(nameof(user), "User does not exist");
+            throw new KeyNotFoundException("User not found");
         
         try
         {
@@ -49,6 +49,13 @@ public class AddressRepository(SimpleMarketDbContext dbContext) : IAddressReposi
     {
         if (address == null)
             throw new ArgumentNullException(nameof(address), "Address cannot be null");
+     
+        var foundAddress = dbContext.Addresses
+            .AsNoTracking()
+            .FirstOrDefault(a => a.Id == addressId);
+        
+        if (foundAddress == null)
+            throw new KeyNotFoundException("Address not found");
         
         await dbContext.Addresses
             .Where(a => a.Id == addressId)
@@ -63,6 +70,13 @@ public class AddressRepository(SimpleMarketDbContext dbContext) : IAddressReposi
 
     public async Task DeleteAddress(long id)
     {
+        var address = await dbContext.Addresses
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Id == id);
+        
+        if (address == null)
+            throw new KeyNotFoundException("Address not found");
+        
         await dbContext.Addresses
             .Where(a => a.Id == id)
             .ExecuteDeleteAsync();

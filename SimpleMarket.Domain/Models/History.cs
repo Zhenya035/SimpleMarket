@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace SimpleMarket.Core.Models;
+﻿namespace SimpleMarket.Core.Models;
 
 public class History
 {

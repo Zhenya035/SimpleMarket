@@ -1,18 +1,46 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Persistance.Repositories;
 
 public class HistoryRepository(SimpleMarketDbContext dbContext) : IHistoryRepository
 {
-    public Task<List<History>> GetHistoryByUser(long userId)
+    public async Task<List<History>> GetHistoryByUser(long userId)
     {
-        throw new NotImplementedException();
+        return await dbContext.Histories
+            .AsNoTracking()
+            .Include(h => h.Products)
+            .Where(h => h.UserId == userId)
+            .ToListAsync();
     }
 
-    public Task AddProduct(Product product, long historyId)
+    public async Task AddProduct(long productId, long historyId)
     {
-        throw new NotImplementedException();
+        var foundHistory = await dbContext.Histories
+            .AsNoTracking()
+            .Include(h => h.Products)
+            .FirstOrDefaultAsync(h => h.Id == historyId);
+        
+        if(foundHistory == null)
+            throw new KeyNotFoundException("History not found");
+        
+        var product = dbContext.Products
+            .AsNoTracking()
+            .FirstOrDefault(p => p.Id == productId);
+        
+        if(product == null)
+            throw new KeyNotFoundException("Product not found");
+
+        try
+        {
+            foundHistory.Products.Add(product);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw new  Exception(nameof(e));
+        }
     }
 
     public async Task CreateHistory(History history)
@@ -31,13 +59,19 @@ public class HistoryRepository(SimpleMarketDbContext dbContext) : IHistoryReposi
         } 
     }
 
-    public Task UpdateHistory(History history)
+    public async Task DeleteHistory(long id)
     {
-        throw new NotImplementedException();
-    }
+        var history = await dbContext.Histories
+            .AsNoTracking()
+            .Include(h => h.Products)
+            .FirstOrDefaultAsync(h => h.Id == id);
+        
+        if(history == null)
+            throw new KeyNotFoundException("History not found");
 
-    public Task DeleteHistory(long id)
-    {
-        throw new NotImplementedException();
+        await dbContext.Histories
+            .Where(h => h.Id == id)
+            .ExecuteUpdateAsync(h => h
+                .SetProperty(h => h.Products, new List<Product>()));
     }
 }

@@ -1,42 +1,74 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Persistance.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository(SimpleMarketDbContext dbContext) : ICategoryRepository
 {
-    public Task<List<Category>> GetAllCategories()
+    public async Task<List<Category>> GetAllCategories() =>
+        await dbContext.Categories
+            .AsNoTracking()
+            .ToListAsync();
+
+    public async Task<Category> GetCategoryById(long id)
     {
-        throw new NotImplementedException();
+        var category = await dbContext.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+        
+        if(category == null)
+            throw new KeyNotFoundException("Category not found");
+        
+        return category;
     }
 
-    public Task<Category> GetCategoryById(long id)
+    public async Task AddCategory(Category category)
     {
-        throw new NotImplementedException();
+        if(category == null)
+            throw new ArgumentNullException(nameof(category), "Category cannot be null");
+
+        try
+        {
+            await dbContext.Categories.AddAsync(category);
+            await dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
-    public Task<List<Product>> GetProductsByCategoryId(long id)
+    public async Task UpdateCategory(Category category, long categoryId)
     {
-        throw new NotImplementedException();
+        if(category == null)
+            throw new ArgumentNullException(nameof(category), "Category cannot be null");
+        
+        var findCategory = await dbContext.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == categoryId);
+        
+        if(findCategory == null)
+            throw new KeyNotFoundException("Category not found");
+
+        await dbContext.Categories
+            .Where(c => c.Id == categoryId)
+            .ExecuteUpdateAsync(c => c
+                .SetProperty(c => c.Name, category.Name)
+                .SetProperty(c => c.Description, category.Description));
     }
 
-    public Task AddCategory(Category category)
+    public async Task DeleteCategory(long id)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task AddProductInCategoryById(Product product, long CategoryId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateCategory(Category category)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteCategory(long id)
-    {
-        throw new NotImplementedException();
+        var category = await dbContext.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
+        
+        if(category == null)
+            throw new KeyNotFoundException("Category not found");
+        
+        await dbContext.Categories
+            .Where(c => c.Id == id)
+            .ExecuteDeleteAsync();
     }
 }

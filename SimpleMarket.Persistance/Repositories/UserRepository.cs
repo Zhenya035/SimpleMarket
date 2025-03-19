@@ -37,14 +37,24 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
             .Include(u => u.FavouriteProducts)
             .FirstOrDefaultAsync(u => u.Id == userId);
         
+        if(user == null)
+            throw new KeyNotFoundException("User not found");
+        
         var product = dbContext.Products
             .AsNoTracking()
             .FirstOrDefault(p => p.Id == productId);
+        
+        if(product == null)
+            throw new KeyNotFoundException("Product not found");
         
         if (!user.FavouriteProducts.Contains(product))
         {
             user.FavouriteProducts.Add(product);
             await dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            throw new KeyNotFoundException("Product already added");
         }
     }
 
@@ -71,6 +81,13 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
         if(user == null)
             throw new ArgumentNullException(nameof(user), "User cannot be null");
         
+        var foundUser = await dbContext.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == userId);
+        
+        if(foundUser == null)
+            throw new KeyNotFoundException("User not found");
+        
         await dbContext.Users
             .Where(u => u.Id == userId)
             .ExecuteUpdateAsync(u => u.
@@ -84,6 +101,13 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
 
     public async Task DeleteUser(long id)
     {
+        var user = await dbContext.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
+        
+        if(user == null)
+            throw new KeyNotFoundException("User not found");
+        
         await dbContext.Users
             .Where(u => u.Id == id)
             .ExecuteDeleteAsync();

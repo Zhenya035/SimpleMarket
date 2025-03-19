@@ -2,7 +2,6 @@
 using SimpleMarket.Application.DTOs.Response;
 using SimpleMarket.Application.Mapping;
 using SimpleMarket.Core.Interfaces.Repositories;
-using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
