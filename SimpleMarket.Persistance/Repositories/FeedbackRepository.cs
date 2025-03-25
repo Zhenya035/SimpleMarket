@@ -25,8 +25,11 @@ public class FeedbackRepository(SimpleMarketDbContext dbContext) : IFeedbackRepo
             .AsNoTracking()
             .Include(p => p.Feedbacks)
             .FirstOrDefaultAsync(p => p.Id == productId);
+        
+        if(product == null)
+            throw new KeyNotFoundException("Product not found");
+        
         return product.Feedbacks;
-
     }
 
     public async Task AddFeedback(Feedback feedback)

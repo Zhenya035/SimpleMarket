@@ -20,7 +20,7 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
 
     public async Task<User> GetUserById(long id)
     {
-        return await dbContext.Users
+        var user = await dbContext.Users
             .AsNoTracking()
             .Include(u =>u.FavouriteProducts)
             .Include(u =>u.Feedbacks)
@@ -28,6 +28,11 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
             .Include(u => u.Cart)
             .Include(u => u.History)
             .FirstOrDefaultAsync(u => u.Id == id);
+        
+        if(user == null)
+            throw new KeyNotFoundException("User not found");
+        
+        return user;
     }
 
     public async Task AddFavouriteProduct(long userId, long productId)

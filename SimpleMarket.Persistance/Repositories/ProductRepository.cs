@@ -18,6 +18,7 @@ public class ProductRepository(SimpleMarketDbContext dbContext) : IProductReposi
         var product = await dbContext.Products
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Id == id);
+        
         if (product == null)
             throw new KeyNotFoundException("Product not found");
         

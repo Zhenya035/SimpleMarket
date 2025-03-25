@@ -17,6 +17,16 @@ public class AddressService(IAddressRepository addressRepository)
         return addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList();
     }
 
+    public async Task<List<GetAddressDto>> GetAddressesById(long id)
+    {
+        var addresses = await addressRepository.GetAllAddressesById(id);
+        
+        if (addresses.Count == 0)
+            throw new KeyNotFoundException("Addresses not found");
+        
+        return addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList();
+    }
+
     public async Task AddAddress(AddAddressDto newAddress, long userId)
     {
         var address = AddressMapping.AddMapFromDto(newAddress, userId);
@@ -56,8 +66,15 @@ public class AddressService(IAddressRepository addressRepository)
         var addresses = await addressRepository.GetAllAddressesById(userId);
         
         if(addresses.Count == 0)
-            throw new KeyNotFoundException("Address not found.");
-        
-        await addressRepository.DeleteAddress(addressId);
+            throw new KeyNotFoundException("User don't have addresses.");
+
+        try
+        {
+            await addressRepository.DeleteAddress(addressId);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
     }
 }
