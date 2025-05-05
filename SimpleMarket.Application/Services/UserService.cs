@@ -29,32 +29,17 @@ public class UserService(IUserRepository userRepository, CartService cartService
 
     public async Task AddFavouriteProduct(long userId, long productId)
     {
-        try
-        {
-            await userRepository.AddFavouriteProduct(userId, productId);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        await userRepository.AddFavouriteProduct(userId, productId);
     }
 
     public async Task AddUser(AddUserDto newUser)
     {
         var user = UserMapping.MapFromRequestDto(newUser);
         
-        try
-        {
-            var userId = await userRepository.AddUser(user);
+        var userId = await userRepository.AddUser(user);
 
-            await cartService.CreateCart(userId);
-            await historyService.CreateHistory(userId);
-            
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        await cartService.CreateCart(userId);
+        await historyService.CreateHistory(userId);
     }
     
     public async Task UpdateUser(AddUserDto newUser, long userId)
@@ -66,14 +51,7 @@ public class UserService(IUserRepository userRepository, CartService cartService
         
         var user = UserMapping.MapFromRequestDto(newUser);
         
-        try
-        {
-            await userRepository.UpdateUser(user, userId);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        await userRepository.UpdateUser(user, userId);
     }
     
     public async Task DeleteUser(long userId)

@@ -7,31 +7,17 @@ public class HistoryService(IHistoryRepository historyRepository)
 {
     public async Task<List<History>> GetHistoryByUser(long userId)
     {
-        try
-        {
-            var histories = await historyRepository.GetHistoryByUser(userId);
+        var histories = await historyRepository.GetHistoryByUser(userId);
             
-            if (histories.Count == 0)
-                throw new KeyNotFoundException("History is empty");
+        if (histories.Count == 0)
+            throw new KeyNotFoundException("History is empty");
             
-            return histories;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        return histories;
     }
 
     public async Task AddProduct(long productId, long historyId)
     {
-        try
-        {
-            await historyRepository.AddProduct(productId, historyId);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await historyRepository.AddProduct(productId, historyId);
     }
     
     public async Task CreateHistory(long userId)
@@ -41,25 +27,11 @@ public class HistoryService(IHistoryRepository historyRepository)
             UserId = userId
         };
 
-        try
-        {
-            await historyRepository.CreateHistory(cart);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await historyRepository.CreateHistory(cart);
     }
 
     public async Task DeleteHistory(long id)
     {
-        try
-        {
             await historyRepository.DeleteHistory(id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
     }
 }

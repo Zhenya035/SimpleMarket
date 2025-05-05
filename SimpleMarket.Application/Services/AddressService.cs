@@ -12,7 +12,7 @@ public class AddressService(IAddressRepository addressRepository)
         var addresses = await addressRepository.GetAllAddressesByUser(userId);
         
         if (addresses.Count == 0)
-            throw new KeyNotFoundException("Addresses not found");
+            throw new KeyNotFoundException("Addresses is empty");
         
         return addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList();
     }
@@ -31,14 +31,7 @@ public class AddressService(IAddressRepository addressRepository)
     {
         var address = AddressMapping.AddMapFromDto(newAddress, userId);
         
-        try
-        {
-            await addressRepository.AddAddress(address, userId);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        await addressRepository.AddAddress(address, userId);
     }
 
     public async Task UpdateAddress(AddAddressDto newAddress, long addressId, long userId)

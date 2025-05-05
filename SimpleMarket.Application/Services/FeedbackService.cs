@@ -1,50 +1,36 @@
-﻿using System.Linq.Expressions;
+﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Request;
+using SimpleMarket.Application.Mapping;
 using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
-public class FeedbackService(IFeedbackRepository repository)
+public class FeedbackService(IFeedbackRepository repository, IUserRepository userRepository, IProductRepository productRepository)
 {
     public async Task<List<Feedback>> GetAllFeedbacksByUser(long userId)
     {
-        try
-        {
-            var feedbacks = await repository.GetAllFeedbacksByUser(userId);
-            return feedbacks;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var feedbacks = await repository.GetAllFeedbacksByUser(userId);
+        return feedbacks;
     }
 
     public async Task<List<Feedback>> GetAllFeedbacksByProduct(long productId)
     {
-        try
-        {
-            var feedbacks = await repository.GetAllFeedbacksByProduct(productId);
-            return feedbacks;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var feedbacks = await repository.GetAllFeedbacksByProduct(productId);
+        return feedbacks;
     }
 
-    public async Task AddFeedback(Feedback feedback)
+    public async Task AddFeedback(AddFeedbackDto addFeedbackDto, int userId, int productId)
     {
-        if (feedback == null)
-            throw new ArgumentNullException(nameof(feedback), "Feedback cannot be null");
+        if (addFeedbackDto == null)
+            throw new ArgumentNullException(nameof(addFeedbackDto), "Feedback cannot be null");
         
-        try
-        {
-            await repository.AddFeedback(feedback);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var user = await userRepository.GetUserById(userId);
+        var product = await productRepository.GetProductById(productId);
+        
+        var feedback = FeedbackMapping.MapFromAddFeedbackDto(addFeedbackDto, user, product);
+    
+        await repository.AddFeedback(feedback);
     }
 
     public async Task UpdateFeedback(Feedback feedback, long id)
@@ -52,25 +38,11 @@ public class FeedbackService(IFeedbackRepository repository)
         if (feedback == null)
             throw new ArgumentNullException(nameof(feedback), "Feedback cannot be null");
         
-        try
-        {
-            await repository.UpdateFeedback(feedback, id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await repository.UpdateFeedback(feedback, id);
     }
 
     public async Task DeleteFeedback(long id)
     {
-        try
-        {
-            await repository.DeleteFeedback(id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await repository.DeleteFeedback(id);
     }
 }

@@ -1,21 +1,16 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
+﻿using SimpleMarket.Application.DTOs.Response;
+using SimpleMarket.Application.Mapping;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
 public class CartService(ICartRepository cartRepository)
 {
-    public async Task<Cart> GetCartByUser(long userId)
+    public async Task<GetCartDto> GetCartByUser(long userId)
     {
-        try
-        {
-            var cart = await cartRepository.GetCartByUser(userId);
-            return cart;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var cart = await cartRepository.GetCartByUser(userId);
+        return CartMapping.MapToGetCartDto(cart);
     }
     
     public async Task CreateCart(long userId)
@@ -24,75 +19,32 @@ public class CartService(ICartRepository cartRepository)
         {
             UserId = userId
         };
-
-        try
-        {
-            await cartRepository.CreateCart(cart);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        await cartRepository.CreateCart(cart);
     }
 
     public async Task DeleteCart(long id)
     {
-        try
-        {
-            await cartRepository.DeleteCart(id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await cartRepository.DeleteCart(id);
     }
 
-    public async Task<List<Product>> GetCartProducts(long cartId)
+    public async Task<List<GetProductDto>> GetCartProducts(long cartId)
     {
-        try
-        {
-            var products = await cartRepository.GetAllProductsInCart(cartId);
-            return products;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var products = await cartRepository.GetAllProductsInCart(cartId);
+        return products.Select(p => ProductMapping.MapToGetProductDto(p)).ToList();
     }
 
     public async Task AddProduct(long cartId, long productId)
     {
-        try
-        {
-            await cartRepository.AddProductToCart(cartId, productId);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await cartRepository.AddProductToCart(cartId, productId);
     }
 
     public async Task RemoveProduct(long cartId, long productId)
     {
-        try
-        {
-            await cartRepository.DeleteProductInCart(cartId, productId);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await cartRepository.DeleteProductInCart(cartId, productId);
     }
 
     public async Task RemoveAllProducts(long cartId)
     {
-        try
-        {
-            await cartRepository.DeleteProductsInCart(cartId);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await cartRepository.DeleteProductsInCart(cartId);
     }
 }

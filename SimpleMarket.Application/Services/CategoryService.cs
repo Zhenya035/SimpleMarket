@@ -1,69 +1,36 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
-using SimpleMarket.Core.Models;
+﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Response;
+using SimpleMarket.Application.Mapping;
+using SimpleMarket.Core.Interfaces.Repositories;
 
 namespace SimpleMarket.Application.Services;
 
 public class CategoryService(ICategoryRepository repository)
 {
-    public async Task<List<Category>> GetCategoriesAsync()
+    public async Task<List<GetCategoryDto>> GetCategoriesAsync()
     {
-        try
-        {
-            var categories = await repository.GetAllCategories();
-            return categories;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var categories = await repository.GetAllCategories();
+        return categories.Select(c => CategoryMapping.MapToGetCategoryDto(c)).ToList();
     }
 
-    public async Task<Category> GetCategoryByIdAsync(int id)
+    public async Task<GetCategoryDto> GetCategoryByIdAsync(int id)
     {
-        try
-        {
-            var category = await repository.GetCategoryById(id);
-            return category;
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        var category = await repository.GetCategoryById(id);
+        return CategoryMapping.MapToGetCategoryDto(category);
     }
 
-    public async Task AddCategoryAsync(Category category)
+    public async Task AddCategoryAsync(AddOrUpdateCategoryDto category)
     {
-        try
-        {
-            await repository.AddCategory(category);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await repository.AddCategory(CategoryMapping.MapFromAddCategoryDto(category));
     }
 
-    public async Task UpdateCategoryAsync(Category category, long id)
+    public async Task UpdateCategoryAsync(AddOrUpdateCategoryDto category, long id)
     {
-        try
-        {
-            await repository.UpdateCategory(category, id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await repository.UpdateCategory(CategoryMapping.MapFromAddCategoryDto(category), id);
     }
 
     public async Task DeleteCategoryAsync(long id)
     {
-        try
-        {
-            await repository.DeleteCategory(id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
+        await repository.DeleteCategory(id);
     }
 }
