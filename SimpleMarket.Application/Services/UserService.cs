@@ -14,7 +14,7 @@ public class UserService(IUserRepository userRepository, CartService cartService
         if (users == null)
             throw new KeyNotFoundException("Users not found");
         
-        return users.Select(u => UserMapping.MapToResponseDto(u)).ToList();
+        return users.Select(UserMapping.MapToResponseDto).ToList();
     }
 
     public async Task<GetUserDto> GetUserById(long id)

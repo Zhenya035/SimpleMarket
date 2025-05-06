@@ -18,13 +18,13 @@ public class GetUserDto
     
     public string PhoneNumber { get; set; } = string.Empty;
     
-    public List<GetProductDto> FavouriteProducts { get; set; } = [];
+    public List<string> FavouriteProducts { get; set; } = [];
     
-    public List<GetFeedbackDto> Feedbacks { get; init; } = [];
+    public List<string> Feedbacks { get; init; } = [];
     
-    public IEnumerable<GetAddressDto> Addresses { get; init; } = [];
+    public List<string> Addresses { get; init; } = [];
     
-    public GetHistoryDto History { get; init; }
+    public List<string> History { get; init; }
     
-    public GetCartDto Cart { get; init; }
+    public List<string> Cart { get; init; }
 }

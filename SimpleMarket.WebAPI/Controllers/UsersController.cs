@@ -26,6 +26,8 @@ public class UsersController(UserService userService) : ControllerBase
         return Ok(user);
     }
 
+    
+    //todo посмотреть
     [HttpPost("{userId}/favorite/add/{productId}")]
     public async Task<IActionResult> AddFavorite(long productId, long userId)
     {

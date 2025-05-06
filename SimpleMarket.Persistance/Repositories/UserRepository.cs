@@ -10,11 +10,15 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
     {
         return await dbContext.Users
             .AsNoTracking()
-            .Include(u =>u.FavouriteProducts)
+            .Include(u => u.FavouriteProducts)
             .Include(u =>u.Feedbacks)
             .Include(u =>u.Addresses)
             .Include(u => u.Cart)
+                .ThenInclude(c => c.Products)
+                    .ThenInclude(cp => cp.Product)
             .Include(u => u.History)
+                .ThenInclude(h => h.Products)
+                    .ThenInclude(hp => hp.Product)
             .ToListAsync();
     }
 
@@ -22,11 +26,15 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
     {
         var user = await dbContext.Users
             .AsNoTracking()
-            .Include(u =>u.FavouriteProducts)
+            .Include(u => u.FavouriteProducts)
             .Include(u =>u.Feedbacks)
             .Include(u =>u.Addresses)
             .Include(u => u.Cart)
+                .ThenInclude(c => c.Products)
+                    .ThenInclude(cp => cp.Product)
             .Include(u => u.History)
+                .ThenInclude(h => h.Products)
+                    .ThenInclude(hp => hp.Product)
             .FirstOrDefaultAsync(u => u.Id == id);
         
         if(user == null)
@@ -38,7 +46,6 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
     public async Task AddFavouriteProduct(long userId, long productId)
     {
         var user = await dbContext.Users
-            .AsNoTracking()
             .Include(u => u.FavouriteProducts)
             .FirstOrDefaultAsync(u => u.Id == userId);
         

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using SimpleMarket.Application.Services;
 using SimpleMarket.Core.Interfaces.Repositories;
@@ -33,6 +32,12 @@ builder.Services.AddScoped<ProductService>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<UserService>();
+
+builder.Services.AddScoped<ICartProductRepository, CartProductRepository>();
+builder.Services.AddScoped<CartProductService>();
+
+builder.Services.AddScoped<IHistoryProductRepository, HistoryProductRepository>();
+builder.Services.AddScoped<HistoryProductService>();
 
 builder.Services.AddDbContext<SimpleMarketDbContext>(
     options =>

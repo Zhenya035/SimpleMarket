@@ -16,11 +16,11 @@ public static class UserMapping
             Password = user.Password,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
-            FavouriteProducts = user.FavouriteProducts.Select(fP => ProductMapping.MapToGetProductDto(fP)).ToList(),
-            Feedbacks = user.Feedbacks.Select(f => FeedbackMapping.MapToGetFeedbackDto(f)).ToList(),
-            Addresses = user.Addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList(),
-            Cart = CartMapping.MapToGetCartDto(user.Cart),
-            History = HistoryMapping.MapToGetHistoryDto(user.History),
+            FavouriteProducts = user.FavouriteProducts.Select(fP => fP.Name).ToList(),
+            Feedbacks = user.Feedbacks.Select(f => f.Text).ToList(),
+            Addresses = user.Addresses.Select(a => a.ToString()).ToList(),
+            Cart = user.Cart.Products.Select(c => c.Product.Name).ToList(),
+            History = user.History.Products.Select(h => h.Product.Name).ToList(),
         };
     
     public static User MapFromRequestDto(AddUserDto user) =>
