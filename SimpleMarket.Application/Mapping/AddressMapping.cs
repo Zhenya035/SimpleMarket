@@ -13,6 +13,7 @@ public static class AddressMapping
             Country = addressRequest.Country,
             City = addressRequest.City,
             Street = addressRequest.Street,
+            HomeNumber = addressRequest.HomeNumber,
             PostalCode = addressRequest.PostalCode,
         };
     

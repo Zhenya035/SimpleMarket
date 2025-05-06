@@ -17,14 +17,14 @@ public class AddressService(IAddressRepository addressRepository)
         return addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList();
     }
 
-    public async Task<List<GetAddressDto>> GetAddressesById(long id)
+    public async Task<GetAddressDto> GetAddressesById(long id)
     {
-        var addresses = await addressRepository.GetAllAddressesById(id);
+        var address = await addressRepository.GetAddressById(id);
         
-        if (addresses.Count == 0)
-            throw new KeyNotFoundException("Addresses not found");
+        if (address == null)
+            throw new KeyNotFoundException("Address not found");
         
-        return addresses.Select(a => AddressMapping.GetMapToDto(a)).ToList();
+        return AddressMapping.GetMapToDto(address);
     }
 
     public async Task AddAddress(AddAddressDto newAddress, long userId)
@@ -34,40 +34,20 @@ public class AddressService(IAddressRepository addressRepository)
         await addressRepository.AddAddress(address, userId);
     }
 
-    public async Task UpdateAddress(AddAddressDto newAddress, long addressId, long userId)
+    public async Task UpdateAddress(AddAddressDto newAddress, long addressId)
     {
-        var addresses = await addressRepository.GetAllAddressesById(addressId);
+        var address = await addressRepository.GetAddressById(addressId);
         
-        if (addresses.Count == 0)
+        if (address == null)
             throw new KeyNotFoundException("Address not found");
         
-        var address = AddressMapping.AddMapFromDto(newAddress, userId);
+        address = AddressMapping.AddMapFromDto(newAddress, address.UserId);
         
-        try
-        {
-            await addressRepository.UpdateAddress(address, addressId);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        await addressRepository.UpdateAddress(address, addressId);
     }
 
-    public async Task DeleteAddress(long addressId, long userId)
+    public async Task DeleteAddress(long addressId)
     {
-        var addresses = await addressRepository.GetAllAddressesById(userId);
-        
-        if(addresses.Count == 0)
-            throw new KeyNotFoundException("User don't have addresses.");
-
-        try
-        {
-            await addressRepository.DeleteAddress(addressId);
-        }
-        catch (Exception e)
-        {
-            throw new Exception(e.Message);
-        }
-    }
+        await addressRepository.DeleteAddress(addressId);
+   }
 }

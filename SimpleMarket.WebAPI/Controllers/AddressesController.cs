@@ -20,7 +20,7 @@ public class AddressesController(AddressService addressService) : ControllerBase
 
     }
 
-    [HttpGet("{addressId}/all")]
+    [HttpGet("{addressId}")]
     public async Task<ActionResult<List<Address>>> GetAddressesById(long addressId)
     {
         if (!ModelState.IsValid)
@@ -37,17 +37,17 @@ public class AddressesController(AddressService addressService) : ControllerBase
         return Ok();
     }
 
-    [HttpPut("{userId}/{addressId}/update")]
-    public async Task<IActionResult> UpdateAddress([FromBody] AddAddressDto newAddress, long userId, long addressId)
+    [HttpPut("{addressId}/update")]
+    public async Task<IActionResult> UpdateAddress([FromBody] AddAddressDto newAddress, long addressId)
     {
-        await addressService.UpdateAddress(newAddress, addressId, userId);
+        await addressService.UpdateAddress(newAddress, addressId);
         return Ok();
     }
 
-    [HttpDelete("{userId}/{addressId}/delete")]
-    public async Task<IActionResult> DeleteAddress(long userId, long addressId)
+    [HttpDelete("{addressId}/delete")]
+    public async Task<IActionResult> DeleteAddress(long addressId)
     {
-        await addressService.DeleteAddress(addressId, userId);
+        await addressService.DeleteAddress(addressId);
         return Ok();
     }
 }

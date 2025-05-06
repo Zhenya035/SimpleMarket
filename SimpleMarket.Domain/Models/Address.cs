@@ -12,4 +12,9 @@ public class Address
     
     public long UserId { get; init; }
     public User User { get; init; }
+
+    public override string ToString()
+    {
+        return Country + ", " + City + ", " + Street + ", " + HomeNumber + ", " + PostalCode;
+    }
 }

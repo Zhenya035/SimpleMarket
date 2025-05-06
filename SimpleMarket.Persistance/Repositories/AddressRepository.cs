@@ -14,12 +14,11 @@ public class AddressRepository(SimpleMarketDbContext dbContext) : IAddressReposi
             .ToListAsync();
     }
     
-    public async Task<List<Address>> GetAllAddressesById(long userId)
+    public async Task<Address> GetAddressById(long id)
     {
         return await dbContext.Addresses
             .AsNoTracking()
-            .Where(a => a.Id == userId)
-            .ToListAsync();
+            .FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task AddAddress(Address address, long userId)
