@@ -7,12 +7,6 @@ namespace SimpleMarket.Application.Services;
 
 public class CartService(ICartRepository cartRepository)
 {
-    public async Task<GetCartDto> GetCartByUser(long userId)
-    {
-        var cart = await cartRepository.GetCartByUser(userId);
-        return CartMapping.MapToGetCartDto(cart);
-    }
-    
     public async Task CreateCart(long userId)
     {
         var cart = new Cart()
@@ -20,11 +14,6 @@ public class CartService(ICartRepository cartRepository)
             UserId = userId
         };
         await cartRepository.CreateCart(cart);
-    }
-
-    public async Task DeleteCart(long id)
-    {
-        await cartRepository.DeleteCart(id);
     }
 
     public async Task<List<GetProductDto>> GetCartProducts(long cartId)

@@ -6,19 +6,6 @@ namespace SimpleMarket.Persistance.Repositories;
 
 public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
 {
-    public async Task<Cart> GetCartByUser(long userId)
-    {
-        var user = await dbContext.Users
-            .AsNoTracking()
-            .Include(u => u.Cart)
-            .FirstOrDefaultAsync(u => u.Id == userId);
-
-        if (user == null)
-            throw new KeyNotFoundException("User not found");
-
-        return user.Cart;
-    }
-
     public async Task CreateCart(Cart cart)
     {
         if (cart == null)
@@ -35,25 +22,14 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
         }
     }
 
-    public async Task DeleteCart(long id)
-    {
-        var cart = await dbContext.Carts
-            .AsNoTracking()
-            .FirstOrDefaultAsync(c => c.Id == id);
-
-        if (cart == null)
-            throw new KeyNotFoundException("Cart not found");
-
-        await dbContext.Carts
-            .Where(c => c.Id == id)
-            .ExecuteDeleteAsync();
-    }
-
     public async Task<List<Product>> GetAllProductsInCart(long cartId)
     {
         var cart = await dbContext.Carts
             .AsNoTracking()
-            .Include(p => p.Products)
+            .Include(c => c.Products)
+                .ThenInclude(p => p.Category)
+            .Include(c => c.Products)
+                .ThenInclude(p => p.Feedbacks)
             .FirstOrDefaultAsync(c => c.Id == cartId);
 
         if (cart == null)
@@ -89,7 +65,6 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
     public async Task DeleteProductInCart(long cartId, long productId)
     {
         var cart = await dbContext.Carts
-            .AsNoTracking()
             .Include(p => p.Products)
             .FirstOrDefaultAsync(c => c.Id == cartId);
         

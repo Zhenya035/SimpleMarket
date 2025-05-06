@@ -6,7 +6,7 @@ public class GetCartDto
 {
     public long Id { get; init; }
     
-    public List<GetProductDto> Products { get; set; } = [];
+    public List<string> Products { get; set; } = [];
 
     public decimal TotalPrice { get; set; } = 0;
 }

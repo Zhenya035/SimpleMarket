@@ -9,7 +9,7 @@ public class CartMapping
         new GetCartDto()
         {
             Id = cart.Id,
-            Products = cart.Products.Select(p => ProductMapping.MapToGetProductDto(p)).ToList(),
+            Products = cart.Products.Select(p => p.Name).ToList(),
             TotalPrice = cart.TotalPrice
         };
     
