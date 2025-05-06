@@ -1,9 +1,7 @@
-﻿namespace SimpleMarket.Application.DTOs.Response;
+﻿namespace SimpleMarket.Application.DTOs.Request;
 
-public class GetProductDto
+public class AddProductDto
 {
-    public long Id { get; init; }
-    
     public string Name { get; set; } = string.Empty;
     
     public string Description { get; set; } = string.Empty;
@@ -12,7 +10,5 @@ public class GetProductDto
     
     public List<string> Images { get; set; } = [];
     
-    public string CategoryName { get; set; } = string.Empty;
-    
-    public int FeedbacksCount { get; set; } = 0;
+    public long CategoryId { get; set; }
 }

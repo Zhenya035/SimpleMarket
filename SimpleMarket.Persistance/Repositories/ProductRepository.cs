@@ -10,6 +10,8 @@ public class ProductRepository(SimpleMarketDbContext dbContext) : IProductReposi
     {
         return await dbContext.Products
             .AsNoTracking()
+            .Include(p => p.Category)
+            .Include(p => p.Feedbacks)
             .ToListAsync();
     }
 
@@ -17,6 +19,8 @@ public class ProductRepository(SimpleMarketDbContext dbContext) : IProductReposi
     {
         var product = await dbContext.Products
             .AsNoTracking()
+            .Include(p => p.Category)
+            .Include(p => p.Feedbacks)
             .FirstOrDefaultAsync(p => p.Id == id);
         
         if (product == null)

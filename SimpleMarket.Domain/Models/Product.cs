@@ -17,7 +17,7 @@ public class Product
     
     public List<Feedback> Feedbacks { get; set; } = [];
     
-    public List<History> Histories { get; set; } = [];
+    public List<History> History { get; set; } = [];
     
     public List<Cart> Carts { get; set; } = [];
     
