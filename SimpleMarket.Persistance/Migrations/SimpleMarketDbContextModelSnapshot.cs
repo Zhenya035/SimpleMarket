@@ -39,13 +39,13 @@ namespace SimpleMarket.Persistance.Migrations
 
             modelBuilder.Entity("HistoryProduct", b =>
                 {
-                    b.Property<long>("HistoriesId")
+                    b.Property<long>("HistoryId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ProductsId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("HistoriesId", "ProductsId");
+                    b.HasKey("HistoryId", "ProductsId");
 
                     b.HasIndex("ProductsId");
 
@@ -278,7 +278,7 @@ namespace SimpleMarket.Persistance.Migrations
                 {
                     b.HasOne("SimpleMarket.Core.Models.History", null)
                         .WithMany()
-                        .HasForeignKey("HistoriesId")
+                        .HasForeignKey("HistoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
