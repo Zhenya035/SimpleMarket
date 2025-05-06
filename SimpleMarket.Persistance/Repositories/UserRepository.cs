@@ -59,7 +59,7 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
         if(product == null)
             throw new KeyNotFoundException("Product not found");
         
-        if (!user.FavouriteProducts.Contains(product))
+        if (!user.FavouriteProducts.Select(p => p.Id).ToList().Contains(product.Id))
         {
             user.FavouriteProducts.Add(product);
             await dbContext.SaveChangesAsync();
