@@ -25,10 +25,10 @@ public class FeedbackService(IFeedbackRepository repository, IUserRepository use
         if (addFeedbackDto == null)
             throw new ArgumentNullException(nameof(addFeedbackDto), "Feedback cannot be null");
         
-        var user = await userRepository.GetUserById(userId);
-        var product = await productRepository.GetProductById(productId);
+        await userRepository.GetUserById(userId);
+        await productRepository.GetProductById(productId);
         
-        var feedback = FeedbackMapping.MapFromAddFeedbackDto(addFeedbackDto, user, product);
+        var feedback = FeedbackMapping.MapFromAddFeedbackDto(addFeedbackDto, userId, productId);
     
         await repository.AddFeedback(feedback);
     }

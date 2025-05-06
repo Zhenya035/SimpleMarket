@@ -8,43 +8,35 @@ public class FeedbackRepository(SimpleMarketDbContext dbContext) : IFeedbackRepo
 {
     public async Task<List<Feedback>> GetAllFeedbacksByUser(long userId)
     {
-        var user = await dbContext.Users
+        var feedback = await dbContext.Feedbacks
             .AsNoTracking()
-            .Include(u => u.Feedbacks)
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            .Include(f => f.User)
+            .Include(f => f.Product)
+            .Where(f => f.UserId == userId)
+            .ToListAsync();
         
-        if(user == null)
-            throw new KeyNotFoundException("User not found");
-        
-        return user.Feedbacks;
+        return feedback;
     }
 
     public async Task<List<Feedback>> GetAllFeedbacksByProduct(long productId)
     {
-        var product = await dbContext.Products
+        var feedbacks = await dbContext.Feedbacks
             .AsNoTracking()
-            .Include(p => p.Feedbacks)
-            .FirstOrDefaultAsync(p => p.Id == productId);
+            .Include(f => f.User)
+            .Include(f => f.Product)
+            .Where(f => f.ProductId == productId)
+            .ToListAsync();
         
-        if(product == null)
-            throw new KeyNotFoundException("Product not found");
-        
-        return product.Feedbacks;
+        return feedbacks;
     }
 
     public async Task AddFeedback(Feedback feedback)
     {
         if (feedback == null)
             throw new ArgumentNullException(nameof(feedback), "Feedback cannot be null");
-        try
-        {
-            await dbContext.Feedbacks.AddAsync(feedback);
-            await dbContext.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            throw new Exception("Error while adding feedback", e);
-        }
+
+        await dbContext.Feedbacks.AddAsync(feedback);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateFeedback(Feedback feedback, long feedbackId)
