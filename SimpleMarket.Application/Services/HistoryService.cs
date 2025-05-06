@@ -3,16 +3,26 @@ using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
-public class HistoryService(IHistoryRepository historyRepository)
+public class HistoryService(IHistoryRepository historyRepository, HistoryProductService historyProductService)
 {
-    public async Task<List<History>> GetHistoryByUser(long userId)
+    public async Task<History> GetHistoryById(long id)
     {
-        var histories = await historyRepository.GetHistoryByUser(userId);
+        var history = await historyRepository.GetHistoryById(id);
+        
+        if (history == null)
+            throw new KeyNotFoundException($"History with id {id} not found");
+        
+        return history;
+    }
+    
+    public async Task<History> GetHistoryByUser(long userId)
+    {
+        var history = await historyRepository.GetHistoryByUser(userId);
             
-        if (histories.Count == 0)
-            throw new KeyNotFoundException("History is empty");
-            
-        return histories;
+        if (history == null)
+            throw new KeyNotFoundException($"History for user {userId} not found");
+        
+        return history;
     }
 
     public async Task AddProduct(long productId, long historyId)
@@ -32,6 +42,6 @@ public class HistoryService(IHistoryRepository historyRepository)
 
     public async Task DeleteHistory(long id)
     {
-            await historyRepository.DeleteHistory(id);
+        await historyProductService.DeleteHistory(id);
     }
 }

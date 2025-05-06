@@ -9,7 +9,7 @@ public class HistoryMapping
         new GetHistoryDto()
         {
             Id = history.Id,
-            Products = history.Products.Select(p => ProductMapping.MapToGetProductDto(p)).ToList(),
+            Products = history.Products.Select(p => p.Product.Name).ToList(),
             UserName = history.User.Username,
         };
 }

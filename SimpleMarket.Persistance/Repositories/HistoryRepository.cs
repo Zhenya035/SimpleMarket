@@ -6,41 +6,56 @@ namespace SimpleMarket.Persistance.Repositories;
 
 public class HistoryRepository(SimpleMarketDbContext dbContext) : IHistoryRepository
 {
-    public async Task<List<History>> GetHistoryByUser(long userId)
+    public async Task<History> GetHistoryById(long id)
     {
-        return await dbContext.Histories
+        var history = await dbContext.Histories
             .AsNoTracking()
             .Include(h => h.Products)
-            .Where(h => h.UserId == userId)
-            .ToListAsync();
+                .ThenInclude(hp => hp.Product)
+            .Include(h => h.User)
+            .FirstOrDefaultAsync(h => h.Id == id);
+        
+        if (history == null)
+            throw new KeyNotFoundException("History not found");
+        
+        return history;
+    }
+    
+    public async Task<History> GetHistoryByUser(long userId)
+    {
+        var history = await dbContext.Histories
+            .AsNoTracking()
+            .Include(h => h.Products)
+                .ThenInclude(hp => hp.Product)
+            .Include(h => h.User)
+            .FirstOrDefaultAsync(h => h.UserId == userId);
+        
+        if (history == null)
+            throw new KeyNotFoundException("History not found");
+        
+        return history;
     }
 
     public async Task AddProduct(long productId, long historyId)
     {
-        var foundHistory = await dbContext.Histories
-            .AsNoTracking()
+        var history = await dbContext.Histories
             .Include(h => h.Products)
+                .ThenInclude(hp => hp.Product)
             .FirstOrDefaultAsync(h => h.Id == historyId);
         
-        if(foundHistory == null)
+        if(history == null)
             throw new KeyNotFoundException("History not found");
         
-        var product = dbContext.Products
-            .AsNoTracking()
-            .FirstOrDefault(p => p.Id == productId);
-        
-        if(product == null)
+        var product = dbContext.Products.Any(p => p.Id == productId);
+        if(!product)
             throw new KeyNotFoundException("Product not found");
-
-        try
+        
+        history.Products.Add(new HistoryProduct()
         {
-            foundHistory.Products.Add(product);
-            await dbContext.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            throw new  Exception(nameof(e));
-        }
+            ProductId = productId,
+            HistoryId = historyId
+        });
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task CreateHistory(History history)
@@ -57,21 +72,5 @@ public class HistoryRepository(SimpleMarketDbContext dbContext) : IHistoryReposi
         {
             throw new Exception("Error creating cart", e);
         } 
-    }
-
-    public async Task DeleteHistory(long id)
-    {
-        var history = await dbContext.Histories
-            .AsNoTracking()
-            .Include(h => h.Products)
-            .FirstOrDefaultAsync(h => h.Id == id);
-        
-        if(history == null)
-            throw new KeyNotFoundException("History not found");
-
-        await dbContext.Histories
-            .Where(h => h.Id == id)
-            .ExecuteUpdateAsync(h => h
-                .SetProperty(h => h.Products, new List<Product>()));
     }
 }
