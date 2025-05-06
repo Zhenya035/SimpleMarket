@@ -10,10 +10,10 @@ public class CategoryService(ICategoryRepository repository)
     public async Task<List<GetCategoryDto>> GetCategoriesAsync()
     {
         var categories = await repository.GetAllCategories();
-        return categories.Select(c => CategoryMapping.MapToGetCategoryDto(c)).ToList();
+        return categories.Select(CategoryMapping.MapToGetCategoryDto).ToList();
     }
 
-    public async Task<GetCategoryDto> GetCategoryByIdAsync(int id)
+    public async Task<GetCategoryDto> GetCategoryByIdAsync(long id)
     {
         var category = await repository.GetCategoryById(id);
         return CategoryMapping.MapToGetCategoryDto(category);

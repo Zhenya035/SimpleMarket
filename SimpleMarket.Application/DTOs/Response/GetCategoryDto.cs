@@ -8,5 +8,5 @@ public class GetCategoryDto
     
     public string Description { get; set; } = string.Empty;
     
-    public List<GetProductDto> Products { get; set; } = [];
+    public List<string> Products { get; set; } = [];
 }

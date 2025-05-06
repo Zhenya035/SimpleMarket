@@ -9,12 +9,14 @@ public class CategoryRepository(SimpleMarketDbContext dbContext) : ICategoryRepo
     public async Task<List<Category>> GetAllCategories() =>
         await dbContext.Categories
             .AsNoTracking()
+            .Include(c => c.Products)
             .ToListAsync();
 
     public async Task<Category> GetCategoryById(long id)
     {
         var category = await dbContext.Categories
             .AsNoTracking()
+            .Include(c => c.Products)
             .FirstOrDefaultAsync(c => c.Id == id);
         
         if(category == null)
