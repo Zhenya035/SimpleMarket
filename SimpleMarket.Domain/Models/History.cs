@@ -4,7 +4,7 @@ public class History
 {
     public long Id { get; init; }
     
-    public List<Product> Products { get; set; } = [];
+    public List<HistoryProduct> Products { get; set; } = [];
     
     public long UserId { get; init; }
     public User User { get; init; }

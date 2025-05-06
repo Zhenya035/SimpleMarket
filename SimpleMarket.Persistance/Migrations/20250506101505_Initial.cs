@@ -72,38 +72,13 @@ namespace SimpleMarket.Persistance.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PostalCode = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserID = table.Column<long>(type: "bigint", nullable: false)
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Cards",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CardNumber = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ExpiryDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    CvvCode = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cards_Users_UserId",
+                        name: "FK_Addresses_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -117,6 +92,7 @@ namespace SimpleMarket.Persistance.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TotalPrice = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -185,24 +161,26 @@ namespace SimpleMarket.Persistance.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CartProduct",
+                name: "CartProducts",
                 columns: table => new
                 {
-                    CartsId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductsId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CartId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CartProduct", x => new { x.CartsId, x.ProductsId });
+                    table.PrimaryKey("PK_CartProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CartProduct_Carts_CartsId",
-                        column: x => x.CartsId,
+                        name: "FK_CartProducts_Carts_CartId",
+                        column: x => x.CartId,
                         principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CartProduct_Products_ProductsId",
-                        column: x => x.ProductsId,
+                        name: "FK_CartProducts_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -241,24 +219,26 @@ namespace SimpleMarket.Persistance.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "HistoryProduct",
+                name: "HistoryProducts",
                 columns: table => new
                 {
-                    HistoriesId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductsId = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    HistoryId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HistoryProduct", x => new { x.HistoriesId, x.ProductsId });
+                    table.PrimaryKey("PK_HistoryProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HistoryProduct_Histories_HistoriesId",
-                        column: x => x.HistoriesId,
+                        name: "FK_HistoryProducts_Histories_HistoryId",
+                        column: x => x.HistoryId,
                         principalTable: "Histories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_HistoryProduct_Products_ProductsId",
-                        column: x => x.ProductsId,
+                        name: "FK_HistoryProducts_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -266,19 +246,19 @@ namespace SimpleMarket.Persistance.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_UserID",
+                name: "IX_Addresses_UserId",
                 table: "Addresses",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Cards_UserId",
-                table: "Cards",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartProduct_ProductsId",
-                table: "CartProduct",
-                column: "ProductsId");
+                name: "IX_CartProducts_CartId",
+                table: "CartProducts",
+                column: "CartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartProducts_ProductId",
+                table: "CartProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_UserId",
@@ -303,9 +283,14 @@ namespace SimpleMarket.Persistance.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_HistoryProduct_ProductsId",
-                table: "HistoryProduct",
-                column: "ProductsId");
+                name: "IX_HistoryProducts_HistoryId",
+                table: "HistoryProducts",
+                column: "HistoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HistoryProducts_ProductId",
+                table: "HistoryProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -325,16 +310,13 @@ namespace SimpleMarket.Persistance.Migrations
                 name: "Addresses");
 
             migrationBuilder.DropTable(
-                name: "Cards");
-
-            migrationBuilder.DropTable(
-                name: "CartProduct");
+                name: "CartProducts");
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
-                name: "HistoryProduct");
+                name: "HistoryProducts");
 
             migrationBuilder.DropTable(
                 name: "Carts");

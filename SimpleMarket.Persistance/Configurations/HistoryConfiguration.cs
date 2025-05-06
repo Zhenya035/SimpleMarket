@@ -14,5 +14,9 @@ public class HistoryConfiguration : IEntityTypeConfiguration<History>
         builder.HasOne(h => h.User)
             .WithOne(u => u.History)
             .HasForeignKey<History>(h => h.UserId);
+
+        builder.HasMany(h => h.Products)
+            .WithOne(h => h.History)
+            .HasForeignKey(h => h.HistoryId);
     }
 }

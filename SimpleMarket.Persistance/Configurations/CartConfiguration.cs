@@ -12,7 +12,8 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
         builder.Property(c => c.Id).ValueGeneratedOnAdd();
 
         builder.HasMany(c => c.Products)
-            .WithMany(p => p.Carts);
+            .WithOne(p => p.Cart)
+            .HasForeignKey(f => f.CartId);
         
         builder.HasOne(c => c.User)
             .WithOne(u => u.Cart)

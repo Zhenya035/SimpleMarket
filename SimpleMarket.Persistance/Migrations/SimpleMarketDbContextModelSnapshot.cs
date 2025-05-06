@@ -22,36 +22,6 @@ namespace SimpleMarket.Persistance.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("CartProduct", b =>
-                {
-                    b.Property<long>("CartsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("CartsId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("CartProduct");
-                });
-
-            modelBuilder.Entity("HistoryProduct", b =>
-                {
-                    b.Property<long>("HistoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("HistoryId", "ProductsId");
-
-                    b.HasIndex("ProductsId");
-
-                    b.ToTable("HistoryProduct");
-                });
-
             modelBuilder.Entity("SimpleMarket.Core.Models.Address", b =>
                 {
                     b.Property<long>("Id")
@@ -110,6 +80,29 @@ namespace SimpleMarket.Persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("SimpleMarket.Core.Models.CartProduct", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CartId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartProducts");
                 });
 
             modelBuilder.Entity("SimpleMarket.Core.Models.Category", b =>
@@ -183,6 +176,29 @@ namespace SimpleMarket.Persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("Histories");
+                });
+
+            modelBuilder.Entity("SimpleMarket.Core.Models.HistoryProduct", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("HistoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HistoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("HistoryProducts");
                 });
 
             modelBuilder.Entity("SimpleMarket.Core.Models.Product", b =>
@@ -259,36 +275,6 @@ namespace SimpleMarket.Persistance.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CartProduct", b =>
-                {
-                    b.HasOne("SimpleMarket.Core.Models.Cart", null)
-                        .WithMany()
-                        .HasForeignKey("CartsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SimpleMarket.Core.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HistoryProduct", b =>
-                {
-                    b.HasOne("SimpleMarket.Core.Models.History", null)
-                        .WithMany()
-                        .HasForeignKey("HistoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SimpleMarket.Core.Models.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SimpleMarket.Core.Models.Address", b =>
                 {
                     b.HasOne("SimpleMarket.Core.Models.User", "User")
@@ -309,6 +295,25 @@ namespace SimpleMarket.Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SimpleMarket.Core.Models.CartProduct", b =>
+                {
+                    b.HasOne("SimpleMarket.Core.Models.Cart", "Cart")
+                        .WithMany("Products")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SimpleMarket.Core.Models.Product", "Product")
+                        .WithMany("Carts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cart");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("SimpleMarket.Core.Models.Feedback", b =>
@@ -341,6 +346,25 @@ namespace SimpleMarket.Persistance.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SimpleMarket.Core.Models.HistoryProduct", b =>
+                {
+                    b.HasOne("SimpleMarket.Core.Models.History", "History")
+                        .WithMany("Products")
+                        .HasForeignKey("HistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SimpleMarket.Core.Models.Product", "Product")
+                        .WithMany("Histories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("History");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("SimpleMarket.Core.Models.Product", b =>
                 {
                     b.HasOne("SimpleMarket.Core.Models.Category", "Category")
@@ -356,14 +380,28 @@ namespace SimpleMarket.Persistance.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("SimpleMarket.Core.Models.Cart", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("SimpleMarket.Core.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("SimpleMarket.Core.Models.History", b =>
                 {
                     b.Navigation("Products");
                 });
 
             modelBuilder.Entity("SimpleMarket.Core.Models.Product", b =>
                 {
+                    b.Navigation("Carts");
+
                     b.Navigation("Feedbacks");
+
+                    b.Navigation("Histories");
                 });
 
             modelBuilder.Entity("SimpleMarket.Core.Models.User", b =>

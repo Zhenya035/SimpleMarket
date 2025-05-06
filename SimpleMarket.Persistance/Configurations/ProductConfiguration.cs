@@ -18,5 +18,9 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.HasMany(p => p.Feedbacks)
             .WithOne(f => f.Product)
             .HasForeignKey(f => f.ProductId);
+
+        builder.HasMany(p => p.Histories)
+            .WithOne(h => h.Product)
+            .HasForeignKey(h => h.ProductId);
     }
 }

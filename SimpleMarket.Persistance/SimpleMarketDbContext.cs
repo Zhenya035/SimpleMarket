@@ -13,6 +13,8 @@ public class SimpleMarketDbContext(DbContextOptions<SimpleMarketDbContext> optio
     public DbSet<History>? Histories { get; set; }
     public DbSet<Product>? Products { get; set; }
     public DbSet<User>? Users { get; set; }
+    public DbSet<HistoryProduct>? HistoryProducts { get; set; }
+    public DbSet<CartProduct>? CartProducts { get; set; }
   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +25,8 @@ public class SimpleMarketDbContext(DbContextOptions<SimpleMarketDbContext> optio
         modelBuilder.ApplyConfiguration(new HistoryConfiguration());
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new CartProductConfiguration());
+        modelBuilder.ApplyConfiguration(new HistoryProductConfiguration());
         
         base.OnModelCreating(modelBuilder);
     }

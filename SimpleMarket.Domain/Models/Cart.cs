@@ -4,7 +4,7 @@ public class Cart
 {
     public long Id { get; init; }
     
-    public List<Product> Products { get; set; } = [];
+    public List<CartProduct> Products { get; set; } = [];
 
     public decimal TotalPrice { get; set; } = 0;
     
