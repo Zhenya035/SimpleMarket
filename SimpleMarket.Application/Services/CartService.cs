@@ -5,7 +5,7 @@ using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
 
-public class CartService(ICartRepository cartRepository)
+public class CartService(ICartRepository cartRepository, CartProductService cartProductService)
 {
     public async Task CreateCart(long userId)
     {
@@ -18,8 +18,10 @@ public class CartService(ICartRepository cartRepository)
 
     public async Task<List<GetProductDto>> GetCartProducts(long cartId)
     {
-        var products = await cartRepository.GetAllProductsInCart(cartId);
-        return products.Select(p => ProductMapping.MapToGetProductDto(p)).ToList();
+        var cart = await cartRepository.GetAllProductsInCart(cartId);
+        var products = cart.Products.Select(cp => cp.Product).ToList();
+        
+        return products.Select(ProductMapping.MapToGetProductDto).ToList();
     }
 
     public async Task AddProduct(long cartId, long productId)
@@ -34,6 +36,6 @@ public class CartService(ICartRepository cartRepository)
 
     public async Task RemoveAllProducts(long cartId)
     {
-        await cartRepository.DeleteProductsInCart(cartId);
+        await cartProductService.DeleteProductsInCart(cartId);
     }
 }

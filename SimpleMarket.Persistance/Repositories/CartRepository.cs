@@ -22,26 +22,29 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
         }
     }
 
-    public async Task<List<Product>> GetAllProductsInCart(long cartId)
+    public async Task<Cart> GetAllProductsInCart(long cartId)
     {
         var cart = await dbContext.Carts
             .AsNoTracking()
-            .Include(c => c.Products)
-                .ThenInclude(p => p.Category)
-            .Include(c => c.Products)
-                .ThenInclude(p => p.Feedbacks)
-            .FirstOrDefaultAsync(c => c.Id == cartId);
+                .Include(c => c.Products)
+                    .ThenInclude(p => p.Product)
+                        .ThenInclude(p => p.Category)
+                .Include(c => c.Products)
+                    .ThenInclude(p => p.Product)
+                        .ThenInclude(p => p.Feedbacks)
+                .FirstOrDefaultAsync(c => c.Id == cartId);
 
         if (cart == null)
             throw new KeyNotFoundException("Cart not found");
-
-        return cart.Products;
+        
+        return cart;
     }
 
     public async Task AddProductToCart(long cartId, long productId)
     {
         var cart = await dbContext.Carts
             .Include(p => p.Products)
+                .ThenInclude(cp => cp.Product)
             .FirstOrDefaultAsync(c => c.Id == cartId);
 
         if (cart == null)
@@ -53,10 +56,12 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
         if (product == null)
             throw new KeyNotFoundException("Product not found");
 
-        if (cart.Products.Any(p => p.Id == productId))
-            throw new Exception("Product already added");
-
-        cart.Products.Add(product);
+        cart.Products.Add(new CartProduct
+        {
+            CartId = cartId,
+            ProductId = productId
+        });
+        
         cart.TotalPrice += product.Price;
         
         await dbContext.SaveChangesAsync();
@@ -66,36 +71,37 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
     {
         var cart = await dbContext.Carts
             .Include(p => p.Products)
+                .ThenInclude(cp => cp.Product)
             .FirstOrDefaultAsync(c => c.Id == cartId);
         
         if(cart == null)
             throw new KeyNotFoundException("Cart not found");
         
-        var product = await dbContext.Products
-            .FirstOrDefaultAsync(p => p.Id == productId);
-        
-        if(product == null)
-            throw new KeyNotFoundException("Product not found");
+        var ProductForRemove = cart.Products
+            .FirstOrDefault(cp => cp.ProductId == productId);
 
-        cart.Products.Remove(product);
-        cart.TotalPrice -= product.Price;
+        if (ProductForRemove == null)
+            throw new KeyNotFoundException("Product not found in cart");
+
+        cart.Products.Remove(ProductForRemove);
+        cart.TotalPrice -= ProductForRemove.Product.Price;
         
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteProductsInCart(long cartId)
+    /*public async Task DeleteProductsInCart(long cartId)
     {
-        var foundCart = await dbContext.Carts
+        var cart = await dbContext.Carts
             .AsNoTracking()
             .Include(c => c.Products)
+                .ThenInclude(cp => cp.Product)
             .FirstOrDefaultAsync(c => c.Id == cartId);
         
-        if(foundCart == null)
+        if(cart == null)
             throw new KeyNotFoundException("Feedback not found");
 
-        await dbContext.Carts
-            .Where(c => c.Id == cartId)
-            .ExecuteUpdateAsync(c => c
-                .SetProperty(c => c.Products, new List<Product>()));
-    }
+        cart.Products.Clear();
+        cart.TotalPrice = 0;
+        await dbContext.SaveChangesAsync();
+    }*/
 }
