@@ -6,7 +6,7 @@ using SimpleMarket.Core.Models;
 namespace SimpleMarket.WebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("users")]
 public class UsersController(UserService userService) : ControllerBase
 {
     [HttpGet("all")]
@@ -33,7 +33,7 @@ public class UsersController(UserService userService) : ControllerBase
         return Ok();
     }
     
-    [HttpPost("add")]
+    [HttpPost("registration")]
     public async Task<IActionResult> Add([FromBody] AddUserDto newUser)
     {
         await userService.AddUser(newUser);
