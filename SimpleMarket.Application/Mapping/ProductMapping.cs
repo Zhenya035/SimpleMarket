@@ -6,8 +6,15 @@ namespace SimpleMarket.Application.Mapping;
 
 public class ProductMapping
 {
-    public static GetProductDto MapToGetProductDto(Product product) =>
-        new GetProductDto()
+    public static GetProductDto MapToGetProductDto(Product product)
+    {
+        var evaluations = product.Feedbacks.Select(f => f.Evaluation).ToList();
+        var evaluation = 0.0;
+        
+        if (evaluations.Count != 0)
+            evaluation = evaluations.Sum()/evaluations.Count;
+         
+        return new GetProductDto()
         {
             Id = product.Id,
             Name = product.Name,
@@ -15,8 +22,9 @@ public class ProductMapping
             Price = product.Price,
             Images = product.Images,
             CategoryName = product.Category.Name,
-            FeedbacksCount = product.Feedbacks.Count
+            Evaluation = evaluation
         };
+    }
 
     public static Product MapFromAddProductDto(AddProductDto addProductDto) =>
         new Product()
