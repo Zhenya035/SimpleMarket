@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Request;
 using SimpleMarket.Application.Services;
 using SimpleMarket.Core.Models;
 
@@ -19,11 +21,11 @@ public class UsersController(UserService userService) : ControllerBase
             return Ok(users);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<User>> Get(long id)
+    [HttpPost("login")]
+    public async Task<ActionResult<long>> Get([FromBody] LoginUser login)
     {
-        var user = await userService.GetUserById(id);
-        return Ok(user);
+        var userId = await userService.Login(login);
+        return Ok(userId);
     }
     
     [HttpPost("{userId}/favorite/add/{productId}")]
@@ -33,11 +35,19 @@ public class UsersController(UserService userService) : ControllerBase
         return Ok();
     }
     
-    [HttpPost("registration")]
-    public async Task<IActionResult> Add([FromBody] AddUserDto newUser)
+    [HttpGet("{userId}/favourite")]
+    public async Task<IActionResult> AllFavorite(long userId)
     {
-        await userService.AddUser(newUser);
-        return Ok();
+        var products = await userService.GetFavouriteProducts(userId);
+        
+        return Ok(products);
+    }
+    
+    [HttpPost("registration")]
+    public async Task<ActionResult<long>> Add([FromBody] AddUserDto newUser)
+    {
+        var userId = await userService.AddUser(newUser);
+        return Ok(userId);
     }
 
     [HttpPut("{id}/update")]

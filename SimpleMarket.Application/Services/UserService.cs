@@ -1,4 +1,5 @@
 ﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Request;
 using SimpleMarket.Application.DTOs.Response;
 using SimpleMarket.Application.Mapping;
 using SimpleMarket.Core.Interfaces.Repositories;
@@ -16,15 +17,12 @@ public class UserService(IUserRepository userRepository, CartService cartService
         
         return users.Select(UserMapping.MapToResponseDto).ToList();
     }
-
-    public async Task<GetUserDto> GetUserById(long id)
+    
+    public async Task<long> Login(LoginUser loginUser)
     {
-        var user = await userRepository.GetUserById(id);
+        var userId = await userRepository.Login(loginUser.Username, loginUser.Password);
         
-        if(user == null)
-            throw new KeyNotFoundException("User not found.");
-        
-        return UserMapping.MapToResponseDto(user);
+        return userId;
     }
 
     public async Task AddFavouriteProduct(long userId, long productId)
@@ -32,7 +30,14 @@ public class UserService(IUserRepository userRepository, CartService cartService
         await userRepository.AddFavouriteProduct(userId, productId);
     }
 
-    public async Task AddUser(AddUserDto newUser)
+    public async Task<List<GetProductDto>> GetFavouriteProducts(long userId)
+    {
+        var products = await userRepository.GetFavouriteProducts(userId);
+        
+        return products.Select(ProductMapping.MapToGetProductDto).ToList();
+    }
+
+    public async Task<long> AddUser(AddUserDto newUser)
     {
         var user = UserMapping.MapFromRequestDto(newUser);
         
@@ -40,6 +45,8 @@ public class UserService(IUserRepository userRepository, CartService cartService
 
         await cartService.CreateCart(userId);
         await historyService.CreateHistory(userId);
+        
+        return userId;
     }
     
     public async Task UpdateUser(AddUserDto newUser, long userId)

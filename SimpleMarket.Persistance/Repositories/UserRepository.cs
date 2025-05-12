@@ -42,6 +42,18 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
         
         return user;
     }
+    
+    public async Task<long> Login(string username, string password)
+    {
+        var user = await dbContext.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+        
+        if(user == null)
+            throw new KeyNotFoundException("User not found");
+        
+        return user.Id;
+    }
 
     public async Task AddFavouriteProduct(long userId, long productId)
     {
@@ -68,6 +80,19 @@ public class UserRepository(SimpleMarketDbContext dbContext) : IUserRepository
         {
             throw new KeyNotFoundException("Product already added");
         }
+    }
+
+    public async Task<List<Product>> GetFavouriteProducts(long userId)
+    {
+        var user = await dbContext.Users
+            .AsNoTracking()
+            .Include(u => u.FavouriteProducts)
+            .ThenInclude(fp => fp.Category)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+        if (user == null)
+            throw new KeyNotFoundException("User not found");
+
+        return user.FavouriteProducts;
     }
 
     public async Task<long> AddUser(User user)
