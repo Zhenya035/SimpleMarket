@@ -1,4 +1,6 @@
-﻿using SimpleMarket.Core.Interfaces.Repositories;
+﻿using SimpleMarket.Application.DTOs.Response;
+using SimpleMarket.Application.Mapping;
+using SimpleMarket.Core.Interfaces.Repositories;
 using SimpleMarket.Core.Models;
 
 namespace SimpleMarket.Application.Services;
@@ -15,14 +17,16 @@ public class HistoryService(IHistoryRepository historyRepository, HistoryProduct
         return history;
     }
     
-    public async Task<History> GetHistoryByUser(long userId)
+    public async Task<List<GetProductDto>> GetHistoryByUser(long userId)
     {
         var history = await historyRepository.GetHistoryByUser(userId);
-            
+        
         if (history == null)
             throw new KeyNotFoundException($"History for user {userId} not found");
         
-        return history;
+        var products = history.Products.Select(p => p.Product).ToList();
+        
+        return products.Select(ProductMapping.MapToGetProductDto).ToList();
     }
 
     public async Task AddProduct(long productId, long historyId)

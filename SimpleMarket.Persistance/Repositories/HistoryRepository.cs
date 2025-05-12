@@ -27,6 +27,7 @@ public class HistoryRepository(SimpleMarketDbContext dbContext) : IHistoryReposi
             .AsNoTracking()
             .Include(h => h.Products)
                 .ThenInclude(hp => hp.Product)
+                    .ThenInclude(p => p.Category)
             .Include(h => h.User)
             .FirstOrDefaultAsync(h => h.UserId == userId);
         

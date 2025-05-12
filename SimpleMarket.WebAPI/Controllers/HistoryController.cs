@@ -18,11 +18,11 @@ public class HistoryController(HistoryService historyService, ProductService pro
     }
     
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<GetHistoryDto>> GetHistoryByUser(long userId)
+    public async Task<ActionResult<List<GetProductDto>>> GetHistoryByUser(long userId)
     {
         var history = await historyService.GetHistoryByUser(userId);
         
-        return Ok(HistoryMapping.MapToGetHistoryDto(history));
+        return Ok(history);
     }
 
     [HttpPost("{historyId}/add/{productId}")]
