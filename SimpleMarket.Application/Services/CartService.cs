@@ -16,9 +16,9 @@ public class CartService(ICartRepository cartRepository, CartProductService cart
         await cartRepository.CreateCart(cart);
     }
 
-    public async Task<List<GetProductDto>> GetCartProducts(long cartId)
+    public async Task<List<GetProductDto>> GetCartProducts(long userId)
     {
-        var cart = await cartRepository.GetAllProductsInCart(cartId);
+        var cart = await cartRepository.GetAllProductsByUser(userId);
         var products = cart.Products.Select(cp => cp.Product).ToList();
         
         return products.Select(ProductMapping.MapToGetProductDto).ToList();

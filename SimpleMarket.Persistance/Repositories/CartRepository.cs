@@ -22,7 +22,7 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
         }
     }
 
-    public async Task<Cart> GetAllProductsInCart(long cartId)
+    public async Task<Cart> GetAllProductsByUser(long userId)
     {
         var cart = await dbContext.Carts
             .AsNoTracking()
@@ -32,7 +32,7 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
                 .Include(c => c.Products)
                     .ThenInclude(p => p.Product)
                         .ThenInclude(p => p.Feedbacks)
-                .FirstOrDefaultAsync(c => c.Id == cartId);
+                .FirstOrDefaultAsync(c => c.UserId == userId);
 
         if (cart == null)
             throw new KeyNotFoundException("Cart not found");
@@ -40,12 +40,12 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
         return cart;
     }
 
-    public async Task AddProductToCart(long cartId, long productId)
+    public async Task AddProductToCart(long userId, long productId)
     {
         var cart = await dbContext.Carts
             .Include(p => p.Products)
                 .ThenInclude(cp => cp.Product)
-            .FirstOrDefaultAsync(c => c.Id == cartId);
+            .FirstOrDefaultAsync(c => c.UserId == userId);
 
         if (cart == null)
             throw new KeyNotFoundException("Cart not found");
@@ -58,7 +58,7 @@ public class CartRepository(SimpleMarketDbContext dbContext) : ICartRepository
 
         cart.Products.Add(new CartProduct
         {
-            CartId = cartId,
+            CartId = cart.Id,
             ProductId = productId
         });
         

@@ -8,17 +8,17 @@ namespace SimpleMarket.WebAPI.Controllers;
 [Route("cart")]
 public class CartController(CartService cartService) : ControllerBase
 {
-    [HttpGet("{cartId}/products")]
-    public async Task<ActionResult<List<GetProductDto>>> GetCartProducts(long cartId)
+    [HttpGet("{userId}/products")]
+    public async Task<ActionResult<List<GetProductDto>>> GetCartProducts(long userId)
     {
-        var products = await cartService.GetCartProducts(cartId);
+        var products = await cartService.GetCartProducts(userId);
         return Ok(products);
     }
     
-    [HttpPost("{cartId}/products/add/{productId}")]
-    public async Task<ActionResult> AddCartProduct(long cartId, long productId)
+    [HttpPost("{userId}/products/add/{productId}")]
+    public async Task<ActionResult> AddCartProduct(long userId, long productId)
     {
-        await cartService.AddProduct(cartId, productId);
+        await cartService.AddProduct(userId, productId);
         return Ok();
     }
 
