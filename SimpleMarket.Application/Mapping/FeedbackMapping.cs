@@ -1,4 +1,5 @@
-﻿using SimpleMarket.Application.DTOs;
+﻿using System.Runtime.InteropServices.JavaScript;
+using SimpleMarket.Application.DTOs;
 using SimpleMarket.Application.DTOs.Request;
 using SimpleMarket.Application.DTOs.Response;
 using SimpleMarket.Core.Models;
@@ -22,7 +23,7 @@ public class FeedbackMapping
         new Feedback()
         {
             Text = feedbackDto.Text,
-            Date = feedbackDto.Date,
+            Date = DateOnly.FromDateTime(DateTime.Now),
             Evaluation = feedbackDto.Evaluation,
             UserId = userId,
             ProductId = productId

@@ -14,5 +14,5 @@ public class GetProductDto
     
     public string CategoryName { get; set; } = string.Empty;
     
-    public int FeedbacksCount { get; set; } = 0;
+    public double Evaluation { get; set; } = 0;
 }

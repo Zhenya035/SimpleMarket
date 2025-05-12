@@ -1,4 +1,5 @@
 ﻿using SimpleMarket.Application.DTOs;
+using SimpleMarket.Application.DTOs.Request;
 using SimpleMarket.Application.DTOs.Response;
 using SimpleMarket.Core.Models;
 
@@ -21,6 +22,13 @@ public static class UserMapping
             Addresses = user.Addresses.Select(a => a.ToString()).ToList(),
             Cart = user.Cart.Products.Select(c => c.Product.Name).ToList(),
             History = user.History.Products.Select(h => h.Product.Name).ToList(),
+        };
+
+    public static User MapFromLoginUser(LoginUser user) =>
+        new User()
+        {
+            Username = user.Username,
+            Password = user.Password
         };
     
     public static User MapFromRequestDto(AddUserDto user) =>
